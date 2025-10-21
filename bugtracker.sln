@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.Models", "Bugtra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.Migrations", "Bugtracker.Migrations\Bugtracker.Migrations.csproj", "{6A0C7AFF-BD91-4D7E-86AF-FAFD35AFDFDE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.Data", "Bugtracker.Data\Bugtracker.Data.csproj", "{6BE282F1-FCFA-4B52-B2DF-61C2B0A13DDC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{6A0C7AFF-BD91-4D7E-86AF-FAFD35AFDFDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6A0C7AFF-BD91-4D7E-86AF-FAFD35AFDFDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6A0C7AFF-BD91-4D7E-86AF-FAFD35AFDFDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BE282F1-FCFA-4B52-B2DF-61C2B0A13DDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BE282F1-FCFA-4B52-B2DF-61C2B0A13DDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BE282F1-FCFA-4B52-B2DF-61C2B0A13DDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BE282F1-FCFA-4B52-B2DF-61C2B0A13DDC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

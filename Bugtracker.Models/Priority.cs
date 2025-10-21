@@ -6,7 +6,7 @@ namespace Bugtracker.Models;
 public class Priority
 {
     [Key]
-    [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int Id { get; set; }
     [Required]
     public required string Title { get; set; }
