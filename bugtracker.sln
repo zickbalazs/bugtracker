@@ -9,6 +9,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.Migrations", "Bu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.Data", "Bugtracker.Data\Bugtracker.Data.csproj", "{6BE282F1-FCFA-4B52-B2DF-61C2B0A13DDC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.Services", "Bugtracker.Services\Bugtracker.Services.csproj", "{5A003D4E-F525-4FA3-8858-C9F7B294E2DB}"
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.Frontend", "Bugtracker.Frontend\Bugtracker.Frontend.csproj", "{91F71351-CBAE-494C-8746-D6BCA20771BD}"
 EndProject
 Global
