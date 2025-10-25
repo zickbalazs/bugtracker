@@ -1,0 +1,2 @@
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/dotnet/maui/global", "Bugtracker.Frontend")]
+[assembly: XmlnsDefinition("http://schemas.microsoft.com/dotnet/maui/global", "Bugtracker.Frontend.Pages")]
