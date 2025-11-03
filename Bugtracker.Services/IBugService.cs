@@ -5,11 +5,11 @@ namespace Bugtracker.Services;
 
 public interface IBugService
 {
-    public Task CreateAsync(BugDto newBug);
+    public Task CreateAsync(BugDto newBug, int userId);
     
     public Task DeleteAsync(int id);
     
-    public Task UpdateAsync(BugDto updateData);
+    public Task UpdateAsync(BugDto updateData, int id);
     
     public Task<IList<Bug>> GetAllAsync();
     
