@@ -68,4 +68,10 @@
       <Folder Include="Resources\Images\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Bugtracker.Data\Bugtracker.Data.csproj" />
+      <ProjectReference Include="..\Bugtracker.Models\Bugtracker.Models.csproj" />
+      <ProjectReference Include="..\Bugtracker.Services\Bugtracker.Services.csproj" />
+    </ItemGroup>
+
 </Project>

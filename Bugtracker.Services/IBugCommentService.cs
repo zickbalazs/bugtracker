@@ -8,7 +8,7 @@ public interface IBugCommentService
 
     public Task UpdateAsync(int id, string newContent);
 
-    public Task CreateAsync(string content);
+    public Task CreateAsync(string content, User author, Bug parent);
 
     public Task<IList<BugComment>> GetByBugAsync(Bug bug);
 
