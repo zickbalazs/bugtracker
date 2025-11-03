@@ -13,4 +13,6 @@ public class BugComment
 
     [Required]
     public virtual Bug Parent { get; set; } = null;
+
+    [Required] public virtual User Author { get; set; } = null;
 }
