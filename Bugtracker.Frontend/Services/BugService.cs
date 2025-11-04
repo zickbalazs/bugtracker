@@ -3,7 +3,6 @@ using Bugtracker.Models;
 using Bugtracker.Models.DTOs;
 using Bugtracker.Services;
 using Microsoft.EntityFrameworkCore;
-using UIKit;
 
 namespace Bugtracker.Frontend.Services;
 

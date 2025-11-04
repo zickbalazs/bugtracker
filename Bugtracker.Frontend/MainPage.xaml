@@ -2,12 +2,26 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Bugtracker.Frontend.MainPage">
-
     <ScrollView>
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
-            
+            <Label Text="BugTracker" Style="{StaticResource Headline}"/>
+            <VerticalStackLayout Spacing="10" Padding="10,5">
+                <Label Text="Email Address:"/>
+                <Entry Text="{Binding LoginForm.Email}"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="10" Padding="10,5">
+                <Label Text="Password"/>
+                <Entry IsPassword="True" Text="{Binding LoginForm.Password}"/>
+            </VerticalStackLayout>
+            <HorizontalStackLayout Spacing="10" Padding="10,0">
+                <Button Text="Login"
+                        Command="{Binding TryLoginCommand}"
+                        IsEnabled="{Binding InternetConnectionEstablished}"/>
+                <Button Text="Register"
+                        IsEnabled="{Binding InternetConnectionEstablished}"/>
+            </HorizontalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
 

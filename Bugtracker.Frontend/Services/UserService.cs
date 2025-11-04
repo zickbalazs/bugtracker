@@ -19,7 +19,7 @@ public class UserService(BugtrackerContext context) : IUserService
         var userToFind = await context.Users.FirstOrDefaultAsync(
             x => x.Email == loginData.Email && x.Password == loginData.Password);
 
-        return userToFind == null;
+        return userToFind != null;
     }
 
     public async Task RegisterAsync(RegistrationForm registrationData)
