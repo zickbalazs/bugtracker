@@ -1,6 +1,7 @@
 ﻿using Bugtracker.Data;
 using Bugtracker.Frontend.Services;
-using Bugtracker.Frontend.ViewModels;
+using Bugtracker.Frontend.Viewmodels;
+using Bugtracker.Frontend.Views;
 using Bugtracker.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,11 +22,20 @@ public static class MauiProgram
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
                 fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
             });
-        builder.Services.AddDbContext<BugtrackerContext>(opt=>
-            opt.UseNpgsql(builder.Configuration["ConnectionStrings:BugtrackerConnection"]));
-        builder.Services.AddScoped<IUserService, UserService>();
-        builder.Services.AddScoped<LoginPageViewModel>();
-        builder.Services.AddTransient<MainPage>();
+
+        // SERVICES
+        builder.Services.AddDbContext<BugtrackerContext>(opts =>
+            opts.UseNpgsql(builder.Configuration["Connections:BugtrackerDb"]));
+        builder.Services.AddScoped<IUserService, DbUserService>();
+        
+        // VIEWMODELS
+        builder.Services.AddSingleton<ConnectionViewModel>();
+        builder.Services.AddTransient<LoginViewModel>();
+        builder.Services.AddTransient<RegistrationViewModel>();
+        // PAGES
+        builder.Services.AddSingleton<LoginPage>();
+        builder.Services.AddSingleton<RegistrationPage>();
+        builder.Services.AddSingleton<MainMenuPage>();
 
 #if DEBUG
         builder.Logging.AddDebug();

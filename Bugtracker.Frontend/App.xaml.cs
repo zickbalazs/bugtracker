@@ -1,14 +1,32 @@
-﻿namespace Bugtracker.Frontend;
+﻿using Bugtracker.Frontend.Viewmodels;
+using CommunityToolkit.Mvvm.Messaging;
+
+namespace Bugtracker.Frontend;
+using Bugtracker.Frontend.Views;
 
 public partial class App : Application
 {
-    public App()
+    private LoginViewModel loginVm;
+    
+    public App(LoginViewModel loginViewModel)
     {
+        loginVm = loginViewModel;
         InitializeComponent();
     }
 
     protected override Window CreateWindow(IActivationState? activationState)
     {
-        return new Window(new AppShell());
+        var authTask = SecureStorage.Default.GetAsync("userEmail");
+        authTask.Wait();
+        var authEmail = authTask.Result;
+
+        return new Window(
+            authEmail == null ? 
+                new NavigationPage(new LoginPage(this.loginVm)) :
+                new MainMenuPage()
+        );
+
+
+
     }
 }

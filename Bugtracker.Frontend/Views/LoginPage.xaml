@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="using:Bugtracker.Frontend.Viewmodels"
+             x:Class="Bugtracker.Frontend.Views.LoginPage"
+             x:DataType="viewModels:LoginViewModel"
+             Padding="50">
+    <ContentPage.Content>
+        <VerticalStackLayout>
+            <Label Text="Log in to Bugtracker" 
+                   Style="{StaticResource Headline}"/>
+            <VerticalStackLayout Padding="15">
+                <Label Text="Email Address:"/>
+                <Entry Placeholder="email@example.com"
+                       Text="{Binding Form.Email}"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Padding="15">
+                <Label Text="Password:"/>
+                <Entry IsPassword="True"
+                       Text="{Binding Form.Password}"/>
+            </VerticalStackLayout>
+            <HorizontalStackLayout Spacing="5" 
+                                   Padding="15">
+                <Button Text="Login"
+                        Command="{Binding 
+                            Source={RelativeSource AncestorType={x:Type viewModels:LoginViewModel}},
+                            Path=AttemptLoginCommand}"/>
+                <Button Text="Registration"
+                        Command="{Binding
+                            Source={RelativeSource AncestorType={x:Type viewModels:LoginViewModel}},
+                            Path=GoToRegistrationCommand}"/>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>        
+    </ContentPage.Content>
+</ContentPage>

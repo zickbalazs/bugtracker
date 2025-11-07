@@ -12,4 +12,6 @@ public interface IUserService
     public Task RegisterAsync(RegistrationForm registrationData);
     
     public Task<bool> AuthorizeAsync(User user);
+
+    public Task<User> GetUserByEmail(string emailAddress);
 }
