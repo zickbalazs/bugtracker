@@ -11,9 +11,9 @@ public interface IBugService
     
     public Task UpdateAsync(BugDto updateData, int id);
     
-    public Task<IList<Bug>> GetAllAsync();
+    public Task<List<Bug>> GetAllAsync();
     
-    public Task<IList<Bug>> GetUnsolvedAsync();
+    public Task<List<Bug>> GetUnsolvedAsync();
 
     public Task<Bug> GetAsync(int id);
 }
