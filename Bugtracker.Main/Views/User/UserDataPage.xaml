@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
+             x:Class="Bugtracker.Main.Views.User.UserDataPage"
+             x:DataType="viewModels:UserDataViewModel">
+    <ContentPage.Content>
+        <VerticalStackLayout>
+            <ActivityIndicator 
+                HorizontalOptions="Center"
+                IsVisible="{Binding IsLoading}"
+                IsRunning="{Binding IsLoading}"/>
+            <HorizontalStackLayout>
+                <Image MinimumHeightRequest="50" MinimumWidthRequest="50" Source="account.png"/>
+                <VerticalStackLayout>
+                    <Label Text="{Binding User.Name}"/>
+                    <Label Text="{Binding User.Email}"/>
+                </VerticalStackLayout>
+                <HorizontalStackLayout>
+                    <Button Text="Log out"/>
+                    <Button Text="Delete Account"/>
+                </HorizontalStackLayout>
+            </HorizontalStackLayout>
+        </VerticalStackLayout>
+    </ContentPage.Content>
+</ContentPage>

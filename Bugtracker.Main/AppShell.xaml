@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Bugtracker.Main.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:bugs="using:Bugtracker.Main.Views.Bugs"
+    xmlns:priorities="using:Bugtracker.Main.Views.Priorities"
+    xmlns:account="using:Bugtracker.Main.Views.User"
+    Title="Bugtracker.Main">
+    <TabBar>
+        <Tab Title="Bugs"
+             Icon="bug.png">
+            <ShellContent ContentTemplate="{DataTemplate bugs:UnsolvedBugsPage}"
+                          Title="Unsolved Bugs"/>
+            <ShellContent ContentTemplate="{DataTemplate bugs:AllBugsPage}"
+                          Title="All Bugs"/>
+        </Tab>
+        <Tab Title="Priorities"
+             Icon="priority.png">
+            <ShellContent ContentTemplate="{DataTemplate priorities:PrioritiesMainPage}"/>
+        </Tab>
+        <Tab Title="Account"
+             Icon="account.png">
+            <ShellContent ContentTemplate="{DataTemplate account:UserDataPage}"/>
+        </Tab>
+    </TabBar>
+</Shell>

@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
+             x:Class="Bugtracker.Main.Views.Auth.RegistrationPage"
+             x:DataType="viewModels:RegistrationViewModel">
+    <ContentPage.Content>
+        <VerticalStackLayout VerticalOptions="Center">
+            <Label Text="Register a new user" 
+                   Style="{StaticResource Headline}"
+                   Margin="0,0,0,50"/>
+            <VerticalStackLayout Spacing="5" 
+                                 Padding="15">
+                <Label Text="Email address:"/>
+                <Entry Text="{Binding Email}"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="5" 
+                                 Padding="15">
+                <Label Text="Username:"/>
+                <Entry Text="{Binding Username}"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="5" 
+                                 Padding="15">
+                <Label Text="Password:"/>
+                <Entry Text="{Binding Password}"
+                       IsPassword="True"/>
+            </VerticalStackLayout>
+            <HorizontalStackLayout HorizontalOptions="Center">
+                <Button Text="Register"
+                        IsEnabled="{Binding FormValid}"
+                        Command="{Binding RegisterUserCommand}"/>
+            </HorizontalStackLayout>
+            <ActivityIndicator IsRunning="{Binding IsLoading}"/>
+        </VerticalStackLayout>
+    </ContentPage.Content>
+</ContentPage>
