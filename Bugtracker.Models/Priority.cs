@@ -14,4 +14,10 @@ public class Priority
     public string ColorCode { get; set; } = "#fff";
 
     public virtual IList<Bug> Bugs { get; } = [];
+
+
+    public override string ToString()
+    {
+        return $"{Title}";
+    }
 }

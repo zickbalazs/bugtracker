@@ -2,8 +2,49 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Bugtracker.Main.Views.Bugs.AllBugsPage">
+             xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
+             xmlns:converters="clr-namespace:Bugtracker.Main.Converters"
+             xmlns:components="clr-namespace:Bugtracker.Main.Views.Bugs.Components"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Bugtracker.Main.Views.Bugs.AllBugsPage"
+             x:DataType="viewModels:BugsViewModel">
+    <ContentPage.Resources>
+        <converters:StringToColorConverter x:Key="ColorConverter"/>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Report Bug"
+                     IconImageSource="add.png"
+                     Command="{Binding CreateBugCommand}"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        
+        <ScrollView>
+            <VerticalStackLayout>
+                <ActivityIndicator IsVisible="{Binding LoadingFromDb}" 
+                                   IsRunning="{Binding LoadingFromDb}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"/>
+                <Label Text="No bugs yet :)"
+                       IsVisible="{Binding NoBugsAtAll}"
+                       Style="{StaticResource Headline}"
+                       HorizontalOptions="Center"
+                       VerticalOptions="Center"/>
+                <VerticalStackLayout IsVisible="{Binding  NoBugsAtAll, Converter={toolkit:InvertedBoolConverter}}">
+                    <Label Text="To-Do"
+                           IsVisible="{Binding HasUnsolved}"
+                           BackgroundColor="{AppThemeBinding
+                                Light={StaticResource White},
+                                Dark={StaticResource Black}}"/>
+                    <CollectionView ItemsSource="{Binding UnsolvedBugs}" 
+                                    ItemTemplate="{components:BugSummary}"/>
+                    <Label Text="Solved"
+                           IsVisible="{Binding HasSolved}"
+                           BackgroundColor="{AppThemeBinding
+                                Light={StaticResource White},
+                                Dark={StaticResource Black}}"/>
+                    <CollectionView ItemsSource="{Binding SolvedBugs}"
+                                    ItemTemplate="{components:BugSummary}"/>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<DataTemplate xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Bugtracker.Models;assembly=Bugtracker.Models"
+             x:Class="Bugtracker.Main.Views.Bugs.Components.Comment"
+             x:DataType="models:BugComment">
+    <VerticalStackLayout Margin="50"
+                         Padding="25">
+        <Label Text="{Binding Author.Name}"
+               TextColor="{AppThemeBinding
+                    Dark={StaticResource PrimaryDark},
+                    Light={StaticResource Primary}}"/>
+        <Label Text="{Binding Description}"/>
+    </VerticalStackLayout>
+</DataTemplate>

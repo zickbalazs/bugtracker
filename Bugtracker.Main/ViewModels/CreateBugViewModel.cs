@@ -1,0 +1,103 @@
+﻿using System.ComponentModel.DataAnnotations;
+using Bugtracker.Main.Statics;
+using Bugtracker.Main.Views.Auth;
+using Bugtracker.Models;
+using Bugtracker.Models.DTOs;
+using Bugtracker.Services;
+using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
+
+namespace Bugtracker.Main.ViewModels;
+
+public partial class CreateBugViewModel : ObservableValidator
+{
+    private readonly IBugService _bugService;
+    private readonly IPriorityService _priorityService;
+    private readonly IUserService _userService;
+    
+    [Required]
+    [MinLength(3)]
+    [ObservableProperty, NotifyPropertyChangedFor(nameof(IsFormCorrect))]
+    private string title = string.Empty;
+    
+    [Required]
+    [MinLength(10)]
+    [ObservableProperty, NotifyPropertyChangedFor(nameof(IsFormCorrect))]
+    private string shortDesc = string.Empty;
+    
+    [Required]
+    [ObservableProperty, NotifyPropertyChangedFor(nameof(IsFormCorrect))]
+    private string details = string.Empty;
+    
+    [Required]
+    [ObservableProperty, NotifyPropertyChangedFor(nameof(IsFormCorrect))]
+    private Priority? assignedPriority = null;
+
+    [ObservableProperty] 
+    private List<Priority> priorities = [];
+
+    [ObservableProperty]
+    private bool isLoading = true;
+
+    public CreateBugViewModel(IBugService bugService, IPriorityService priorityService, IUserService userService)
+    {
+        _bugService = bugService;
+        _priorityService = priorityService;
+        _userService = userService;
+        InitViewModel();
+    }
+
+    private async Task InitViewModel()
+    {
+        IsLoading = true;
+
+        Priorities = [..await _priorityService.GetAllAsync()];
+
+        IsLoading = false;
+    }
+    
+    public bool IsFormCorrect
+    {
+        get
+        {
+            this.ValidateAllProperties();
+            return !HasErrors;
+        }
+    }
+
+    public BugDto BugDto =>
+        new BugDto
+        {
+            Title = this.Title,
+            Description = this.Details,
+            ShortDescription = this.ShortDesc,
+            Priority = this.AssignedPriority
+        };
+    
+    
+    [RelayCommand]
+    private async Task UploadEntry()
+    {
+        try
+        {
+            var userKey = await SecureStorage.Default.GetAsync(AuthData.SecureStorageUserEmailKey);
+
+            if (userKey == null)
+            {
+                Application.Current!.Windows[0].Page = new LoginShell();
+            }
+
+            else
+            {
+                var user = await _userService.GetUserByEmail(userKey);
+                await _bugService.CreateAsync(BugDto, user.Id);
+                await Shell.Current.GoToAsync("..//");
+            }
+        }
+        catch (Exception ex)
+        {
+            WeakReferenceMessenger.Default.Send(ex.Message);
+        }
+    }
+}

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<DataTemplate xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Bugtracker.Models;assembly=Bugtracker.Models"
+             xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
+             x:Class="Bugtracker.Main.Views.Bugs.Components.BugSummary"
+             x:DataType="models:Bug">
+    <VerticalStackLayout Padding="5" Spacing="5">
+            <HorizontalStackLayout Spacing="10">
+                <Label Text="{Binding StringFormat='#{0} ',Path=Id}" 
+                       FontSize="24"/>
+                <Label Text="{Binding Title}"
+                       FontSize="24"/>            
+            </HorizontalStackLayout>
+            <Label Text="{Binding Author.Name}"/>
+            <Label Text="{Binding ShortDescription}"></Label>
+            <HorizontalStackLayout>
+                <ImageButton Source="comment.png" 
+                             Command="{Binding
+                              Source={RelativeSource AncestorType={x:Type viewModels:BugsViewModel}},
+                              Path=ViewBugCommand}"
+                             CommandParameter="{Binding Id}"/>
+            </HorizontalStackLayout>
+    </VerticalStackLayout>
+</DataTemplate>

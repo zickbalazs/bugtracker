@@ -6,6 +6,7 @@ using Bugtracker.Main.Views.Bugs;
 using Bugtracker.Main.Views.Priorities;
 using Bugtracker.Main.Views.User;
 using Bugtracker.Services;
+using CommunityToolkit.Maui;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Syncfusion.Maui.Toolkit.Hosting;
@@ -20,6 +21,7 @@ public static class MauiProgram
         builder.ConfigureSyncfusionToolkit();
         builder
             .UseMauiApp<App>()
+            .UseMauiCommunityToolkit()
             .ConfigureFonts(fonts =>
             {
                 fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");
@@ -31,7 +33,10 @@ public static class MauiProgram
             .AddDbContext<BugtrackerContext>(opt =>
                 opt.UseNpgsql(
                     "Server=ginal.duckdns.org;Port=5432;Database=bugtracker;User Id=bugtracker;Password=bugtracker;"))
-            .AddScoped<IUserService, DbUserService>();
+            .AddScoped<IUserService, DbUserService>()
+            .AddScoped<IBugService, DbBugsService>()
+            .AddScoped<IBugCommentService, DbCommentService>()
+            .AddScoped<IPriorityService, DbPriorityService>();
         
         // VIEWMODELS
         builder.Services
@@ -39,25 +44,25 @@ public static class MauiProgram
             .AddTransient<RegistrationViewModel>()
             .AddTransient<BugsViewModel>()
             .AddTransient<BugDetailsViewModel>()
-            .AddTransient<UserDataViewModel>();
+            .AddTransient<UserDataViewModel>()
+            .AddTransient<CreateBugViewModel>();
         
         // PAGES
         builder.Services
             .AddSingleton<LoginPage>()
             .AddSingleton<RegistrationPage>()
             .AddSingleton<AllBugsPage>()
-            .AddSingleton<UnsolvedBugsPage>()
             .AddSingleton<PrioritiesMainPage>()
             .AddSingleton<UserDataPage>();
         
         // SUBPAGES | BUGS
         builder.Services.AddSingleton<BugDetailsPage>();
+        builder.Services.AddSingleton<CreateBugPage>();
         // SUBPAGES | COMMENTS
         
         // SUBPAGES | PRIORITIES
         
 #if DEBUG
-        SecureStorage.Default.RemoveAll();
         builder.Logging.AddDebug();
 #endif
 

@@ -2,8 +2,75 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Bugtracker.Main.Views.Bugs.BugDetailsPage">
+             xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
+             xmlns:markdown="clr-namespace:Indiko.Maui.Controls.Markdown;assembly=Indiko.Maui.Controls.Markdown"
+             xmlns:components="clr-namespace:Bugtracker.Main.Views.Bugs.Components"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:consts="clr-namespace:Bugtracker.Main.Statics"
+             x:Class="Bugtracker.Main.Views.Bugs.BugDetailsPage"
+             x:DataType="viewModels:BugDetailsViewModel"
+             Title="{Binding PageTitle}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Text="Comment"
+            IconImageSource="comment.png"
+            IsEnabled="{Binding AllowedToComment, Converter={toolkit:InvertedBoolConverter}}"
+            Priority="0"/>
+        <ToolbarItem
+            Text="Mark as done"
+            IconImageSource="check.png"
+            IsEnabled="{Binding AllowedToClose, Converter={toolkit:InvertedBoolConverter}}"
+            Priority="1"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
-        
+        <ScrollView>
+            <VerticalStackLayout Padding="10">
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                   IsVisible="{Binding IsLoading}" VerticalOptions="Center"/>
+                <VerticalStackLayout IsVisible="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}">
+                    <markdown:MarkdownView
+                        Padding="25"
+                        TextColor="{AppThemeBinding 
+                            Light={StaticResource Black},
+                            Dark={StaticResource  White}}"
+                        TableRowTextColor="{AppThemeBinding 
+                            Light={StaticResource Black},
+                            Dark={StaticResource  White}}"
+                        H1Color="{AppThemeBinding
+                            Light={StaticResource Primary},
+                            Dark={StaticResource PrimaryDark}}"
+                        H2Color="{AppThemeBinding
+                            Light={StaticResource Primary},
+                            Dark={StaticResource PrimaryDark}}"
+                        H3Color="{AppThemeBinding
+                            Light={StaticResource Primary},
+                            Dark={StaticResource PrimaryDark}}"
+                        HyperlinkColor="{AppThemeBinding 
+                            Light={StaticResource Primary},
+                            Dark={StaticResource PrimaryDark}}"
+                        TableHeaderTextColor="{AppThemeBinding 
+                            Light={StaticResource Primary},
+                            Dark={StaticResource PrimaryDark}}"
+                        BlockQuoteBackgroundColor="{AppThemeBinding
+                            Light={StaticResource Gray100},
+                            Dark={StaticResource Gray950}}"
+                        BlockQuoteTextColor="{AppThemeBinding 
+                            Light={StaticResource Black},
+                            Dark={StaticResource  White}}"
+                        H1FontSize="{x:Static consts:UIElements.H1TextSize}"
+                        H2FontSize="{x:Static consts:UIElements.H2TextSize}"
+                        H3FontSize="{x:Static consts:UIElements.H3TextSize}"
+                        TextFontSize="{x:Static consts:UIElements.TextSize}"
+                        TextFontFace="{x:Static consts:UIElements.TextFont}"
+                        MarkdownText="{Binding Bug.Description}"/>
+                    <Label Text="Comments" 
+                           Style="{StaticResource SubHeadlineLeft}"
+                           IsVisible="{Binding HasComments}"/>
+                    <CollectionView ItemsSource="{Binding Comments}" 
+                                    ItemTemplate="{components:Comment}"
+                                    IsVisible="{Binding HasComments}"/>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
     </ContentPage.Content>
 </ContentPage>

@@ -1,4 +1,5 @@
-﻿using Bugtracker.Main.Views.Auth;
+﻿using Bugtracker.Main.Statics;
+using Bugtracker.Main.Views.Auth;
 
 namespace Bugtracker.Main;
 
@@ -20,7 +21,7 @@ public partial class App : Application
 
     private async Task<bool> CheckIfLoggedIn()
     {
-        return await SecureStorage.Default.GetAsync("userEmail") != null;
+        return await SecureStorage.Default.GetAsync(AuthData.SecureStorageUserEmailKey) != null;
     }
     
 }

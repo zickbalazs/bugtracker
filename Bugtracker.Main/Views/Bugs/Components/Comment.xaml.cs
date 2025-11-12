@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Bugtracker.Main.Views.Bugs;
+namespace Bugtracker.Main.Views.Bugs.Components;
 
-public partial class UnsolvedBugsPage : ContentPage
+public partial class Comment : DataTemplate
 {
-    public UnsolvedBugsPage()
+    public Comment()
     {
         InitializeComponent();
     }
