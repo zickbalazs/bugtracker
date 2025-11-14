@@ -1,5 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
-
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net9.0-maccatalyst|AnyCPU'">
+        <CodesignEntitlements>Platforms\MacCatalyst\Entitlements.plist</CodesignEntitlements>
+    </PropertyGroup>
     <PropertyGroup>
         <TargetFrameworks>net9.0-android;net9.0-ios;net9.0-maccatalyst</TargetFrameworks>
         <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net9.0-windows10.0.19041.0</TargetFrameworks>
@@ -20,11 +22,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
 
+        
+        
         <!-- Display name -->
-        <ApplicationTitle>Bugtracker.Main</ApplicationTitle>
+        <ApplicationTitle>Bugtracker</ApplicationTitle>
 
         <!-- App Identifier -->
-        <ApplicationId>com.companyname.bugtracker.main</ApplicationId>
+        <ApplicationId>com.zick.bugtracker</ApplicationId>
 
         <!-- Versions -->
         <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
@@ -39,6 +43,8 @@
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+        <Company>Zick</Company>
+        <Product>Bugtracker</Product>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Bugtracker.Main.Statics;
 using Bugtracker.Models;
 using Bugtracker.Models.DTOs;
 using Bugtracker.Services;
@@ -61,7 +62,7 @@ public partial class RegistrationViewModel(IUserService service) : ObservableVal
             else
             {
                 await service.RegisterAsync(this.Form);
-                await SecureStorage.Default.SetAsync("userEmail", this.Email);
+                AuthData.SetEmail(Form.Email);
                 Application.Current!.Windows[0].Page = new AppShell();
             }
         }

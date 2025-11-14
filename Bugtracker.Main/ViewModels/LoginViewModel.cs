@@ -1,4 +1,5 @@
-﻿using Bugtracker.Models.DTOs;
+﻿using Bugtracker.Main.Statics;
+using Bugtracker.Models.DTOs;
 using Bugtracker.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -28,7 +29,7 @@ public partial class LoginViewModel(IUserService service) : ObservableObject
             
             if (successfulAttempt)
             {
-                await SecureStorage.Default.SetAsync("userEmail", Form.Email);
+                AuthData.SetEmail(Form.Email);
                 Application.Current!.Windows[0].Page = new AppShell();
             }
             else

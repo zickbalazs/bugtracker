@@ -14,12 +14,11 @@
         <ToolbarItem
             Text="Comment"
             IconImageSource="comment.png"
-            IsEnabled="{Binding AllowedToComment, Converter={toolkit:InvertedBoolConverter}}"
             Priority="0"/>
         <ToolbarItem
             Text="Mark as done"
             IconImageSource="check.png"
-            IsEnabled="{Binding AllowedToClose, Converter={toolkit:InvertedBoolConverter}}"
+            Command="{Binding MarkAsDoneCommand}"
             Priority="1"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>

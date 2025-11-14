@@ -1,4 +1,6 @@
-﻿using Bugtracker.Models;
+﻿using Bugtracker.Main.Statics;
+using Bugtracker.Main.Views.Auth;
+using Bugtracker.Models;
 using Bugtracker.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -18,12 +20,26 @@ public partial class UserDataViewModel : ObservableObject
         GetCurrentUser();
     }
 
-
+    [RelayCommand]
+    private void Logout()
+    {
+        Application.Current!.Windows[0].Page = new LoginShell();
+        Preferences.Clear();
+    }
 
     private async Task GetCurrentUser()
     {
-        var usr = await _service.GetUserByEmail(await SecureStorage.GetAsync("userEmail"));
-        this.User = usr;
-        this.IsLoading = false;
+        var email = AuthData.GetEmail();
+
+        if (email == string.Empty)
+        {
+            Application.Current!.Windows[0].Page = new LoginShell();
+        }
+        else
+        {
+            var usr = await _service.GetUserByEmail(email);
+            this.User = usr;
+            this.IsLoading = false;    
+        }
     }
 }

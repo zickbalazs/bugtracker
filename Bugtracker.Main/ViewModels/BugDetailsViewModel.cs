@@ -3,6 +3,8 @@ using Bugtracker.Main.Views.Auth;
 using Bugtracker.Models;
 using Bugtracker.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
+using CommunityToolkit.Mvvm.Messaging;
 
 namespace Bugtracker.Main.ViewModels;
 
@@ -13,12 +15,9 @@ public partial class BugDetailsViewModel : ObservableObject
     private readonly IUserService _userService;
 
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(AllowedToComment))]
-    [NotifyPropertyChangedFor(nameof(AllowedToClose))]
     private User currentUser= new User();
     
     [ObservableProperty]
-    [NotifyPropertyChangedFor(nameof(AllowedToComment))]
     private Bug bug = new Bug()
     {
         Title = "Loading",
@@ -37,10 +36,15 @@ public partial class BugDetailsViewModel : ObservableObject
     
     public bool HasComments => Comments.Count > 0;
 
-    public bool AllowedToComment => !IsLoading && !Bug.Solved;
-    public bool AllowedToClose => !IsLoading && 
-                                  !Bug.Solved && 
-                                  (Bug.Author.Id == CurrentUser.Id || CurrentUser.IsAdmin);
+    private bool AllowedToComment()
+    {
+        return !IsLoading && !Bug.Solved;
+    }
+
+    private bool AllowedToClose()
+    {
+        return !IsLoading && !Bug.Solved && (Bug.Author.Id == CurrentUser.Id || CurrentUser.IsAdmin);
+    }
     
     
     public BugDetailsViewModel(IBugService bugService, IBugCommentService commentService, IUserService userService)
@@ -57,14 +61,16 @@ public partial class BugDetailsViewModel : ObservableObject
         Bug = await _bugService.GetAsync(id);
         Comments = [ ..await _commentService.GetByBugAsync(Bug) ];
         PageTitle = $"#{Bug.Id} {Bug.Title}";
+        CommentCommand.NotifyCanExecuteChanged();
+        MarkAsDoneCommand.NotifyCanExecuteChanged();
         IsLoading = false;
     }
 
     private async Task GetUser()
     {
-        var email = await SecureStorage.Default.GetAsync(AuthData.SecureStorageUserEmailKey);
+        var email = AuthData.GetEmail();
 
-        if (email == null)
+        if (email == string.Empty)
             Application.Current!.Windows[0].Page = new LoginShell();
 
         else
@@ -72,5 +78,25 @@ public partial class BugDetailsViewModel : ObservableObject
             CurrentUser = await _userService.GetUserByEmail(email);
         }
     }
-    
+
+    [RelayCommand(CanExecute = nameof(AllowedToClose))]
+    private async Task MarkAsDone()
+    {
+        try
+        {
+            await _bugService.MarkBugAsSolved(Bug.Id);
+            await this.InitDetails(Bug.Id);
+        }
+        catch (Exception ex)
+        {
+            WeakReferenceMessenger.Default.Send(ex.Message);
+        }
+        
+    }
+
+    [RelayCommand(CanExecute = nameof(AllowedToComment))]
+    private async Task Comment()
+    {
+        
+    }
 }

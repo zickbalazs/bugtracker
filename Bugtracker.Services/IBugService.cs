@@ -16,4 +16,6 @@ public interface IBugService
     public Task<List<Bug>> GetUnsolvedAsync();
 
     public Task<Bug> GetAsync(int id);
+
+    public Task MarkBugAsSolved(int id);
 }

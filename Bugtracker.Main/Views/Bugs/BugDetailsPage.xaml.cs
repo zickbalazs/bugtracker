@@ -21,5 +21,6 @@ public partial class BugDetailsPage : ContentPage, IQueryAttributable
         var id = (string)query["id"];
 
         vm.InitDetails(Convert.ToInt32(id));
+        
     }
 }

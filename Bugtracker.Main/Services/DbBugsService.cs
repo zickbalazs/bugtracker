@@ -1,7 +1,9 @@
-﻿using Bugtracker.Data;
+﻿using System.Xml.Schema;
+using Bugtracker.Data;
 using Bugtracker.Models;
 using Bugtracker.Models.DTOs;
 using Bugtracker.Services;
+using CommunityToolkit.Mvvm.Messaging;
 using Microsoft.EntityFrameworkCore;
 
 namespace Bugtracker.Main.Services;
@@ -27,14 +29,18 @@ public class DbBugsService(BugtrackerContext ctx) : IBugService
         await ctx.SaveChangesAsync();
     }
 
-    public Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        await ctx.Bugs.Where(x => x.Id == id).ExecuteDeleteAsync();
     }
 
-    public Task UpdateAsync(BugDto updateData, int id)
+    public async Task UpdateAsync(BugDto updateData, int id)
     {
-        throw new NotImplementedException();
+        await ctx.Bugs.Where(x => x.Id == id).ExecuteUpdateAsync(prop =>
+            prop.SetProperty(x => x.Description, updateData.Description)
+                .SetProperty(x => x.ShortDescription, updateData.ShortDescription)
+                .SetProperty(x => x.Title, updateData.Title)
+                .SetProperty(x => x.Priority, updateData.Priority));
     }
 
     public async Task<List<Bug>> GetAllAsync()
@@ -54,5 +60,16 @@ public class DbBugsService(BugtrackerContext ctx) : IBugService
     public async Task<Bug> GetAsync(int id)
     {
         return await ctx.Bugs.FindAsync(id) ?? throw new KeyNotFoundException("Bug with this id is not found");
+    }
+
+    public async Task MarkBugAsSolved(int id)
+    {
+        var rowsAffected = await ctx.Bugs.Where(x => x.Id == id)
+            .ExecuteUpdateAsync(obj=>
+                obj.SetProperty(x=>x.Solved, true)
+                   .SetProperty(x=>x.SolvedOn, DateTime.UtcNow));
+
+        if (rowsAffected < 1)
+            throw new KeyNotFoundException();
     }
 }

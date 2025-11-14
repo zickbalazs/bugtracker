@@ -14,14 +14,12 @@ public partial class App : Application
     {
         var userAuthSuccess = this.CheckIfLoggedIn();
 
-        userAuthSuccess.Wait();
-        
-        return new Window(userAuthSuccess.Result ? new AppShell() : new LoginShell());
+        return new Window(userAuthSuccess ? new AppShell() : new LoginShell());
     }
 
-    private async Task<bool> CheckIfLoggedIn()
+    private bool CheckIfLoggedIn()
     {
-        return await SecureStorage.Default.GetAsync(AuthData.SecureStorageUserEmailKey) != null;
+        return AuthData.GetEmail() != string.Empty;
     }
     
 }

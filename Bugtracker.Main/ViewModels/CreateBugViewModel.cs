@@ -81,9 +81,9 @@ public partial class CreateBugViewModel : ObservableValidator
     {
         try
         {
-            var userKey = await SecureStorage.Default.GetAsync(AuthData.SecureStorageUserEmailKey);
+            var userKey = AuthData.GetEmail();
 
-            if (userKey == null)
+            if (userKey == string.Empty)
             {
                 Application.Current!.Windows[0].Page = new LoginShell();
             }

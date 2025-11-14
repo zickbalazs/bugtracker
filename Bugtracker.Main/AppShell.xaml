@@ -6,8 +6,9 @@
     xmlns:bugs="using:Bugtracker.Main.Views.Bugs"
     xmlns:priorities="using:Bugtracker.Main.Views.Priorities"
     xmlns:account="using:Bugtracker.Main.Views.User"
-    Title="Bugtracker">
-    <TabBar>
+    Title="Bugtracker"
+    TabBarIsVisible="True">
+    <TabBar IsVisible="True">
         <Tab Title="Bugs"
              Icon="bug.png">
             <ShellContent ContentTemplate="{DataTemplate bugs:AllBugsPage}"
