@@ -9,5 +9,6 @@ public partial class AppShell : Shell
         InitializeComponent();
         Routing.RegisterRoute("bugdetails", typeof(BugDetailsPage));
         Routing.RegisterRoute("createBug", typeof(CreateBugPage));
+        Routing.RegisterRoute("editBug", typeof(EditBugPage));
     }
 }

@@ -7,9 +7,10 @@ namespace Bugtracker.Main.Services;
 
 public class DbCommentService(BugtrackerContext ctx) : IBugCommentService
 {
-    public Task DeleteAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var rows = await ctx.Comments.Where(x => x.Id == id).ExecuteDeleteAsync();
+        if (rows < 1) throw new KeyNotFoundException();
     }
 
     public Task UpdateAsync(int id, string newContent)
@@ -17,9 +18,24 @@ public class DbCommentService(BugtrackerContext ctx) : IBugCommentService
         throw new NotImplementedException();
     }
 
-    public Task CreateAsync(string content, User author, Bug parent)
+    public async Task CreateAsync(string content, User author, Bug parent)
     {
-        throw new NotImplementedException();
+        var bugExists = await ctx.Bugs.FindAsync(parent.Id) != null;
+
+        if (!bugExists) throw new KeyNotFoundException("The bug doesn't exist, it might have been removed");
+
+        var authorExists = await ctx.Users.FindAsync(author.Id) != null;
+
+        if (!authorExists) throw new KeyNotFoundException("This author doesn't exist");
+
+        await ctx.Comments.AddAsync(new BugComment
+        {
+            Author = author,
+            Description = content,
+            Parent = parent
+        });
+
+        await ctx.SaveChangesAsync();
     }
 
     public async Task<IList<BugComment>> GetByBugAsync(Bug bug)

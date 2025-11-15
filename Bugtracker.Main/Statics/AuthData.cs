@@ -1,8 +1,11 @@
-﻿namespace Bugtracker.Main.Statics;
+﻿using System.Net;
+
+namespace Bugtracker.Main.Statics;
 
 public static class AuthData
 {
     public const string SecureStorageUserEmailKey = "userEmail";
+    private const string DatabaseUrl = "ginal.duckdns.org";
 
     public static string GetEmail()
     {

@@ -14,20 +14,30 @@ public partial class BugDetailsViewModel : ObservableObject
     private readonly IBugCommentService _commentService;
     private readonly IUserService _userService;
 
-    [ObservableProperty]
+    [ObservableProperty, 
+     NotifyCanExecuteChangedFor(nameof(MarkAsDoneCommand)),
+     NotifyCanExecuteChangedFor(nameof(CommentCommand)),
+     NotifyCanExecuteChangedFor(nameof(EditCommentCommand)),
+     NotifyCanExecuteChangedFor(nameof(DeleteCommentCommand))]
     private User currentUser= new User();
     
-    [ObservableProperty]
+    [ObservableProperty, 
+     NotifyCanExecuteChangedFor(nameof(MarkAsDoneCommand)),
+     NotifyCanExecuteChangedFor(nameof(CommentCommand))]
     private Bug bug = new Bug()
     {
         Title = "Loading",
         Description = "Loading",
         ShortDescription = "Loading",
         Solved = false,
+        SolvedOn = DateTime.Now,
         Author = new User()
     };
     
-    [ObservableProperty]
+    [ObservableProperty, 
+     NotifyCanExecuteChangedFor(nameof(MarkAsDoneCommand)), 
+     NotifyCanExecuteChangedFor(nameof(CommentCommand)),
+     NotifyCanExecuteChangedFor(nameof(EditCommentCommand))]
     private bool isLoading;
     [ObservableProperty, NotifyPropertyChangedFor(nameof(HasComments))]
     private List<BugComment> comments = [];
@@ -45,7 +55,16 @@ public partial class BugDetailsViewModel : ObservableObject
     {
         return !IsLoading && !Bug.Solved && (Bug.Author.Id == CurrentUser.Id || CurrentUser.IsAdmin);
     }
-    
+
+    private bool AllowedToEditComment(BugComment comment)
+    {
+        return !IsLoading && comment.Author.Id == CurrentUser.Id;
+    }
+
+    private bool AllowedToDeleteComment(BugComment comment)
+    {
+        return !IsLoading && (comment.Author.Id == CurrentUser.Id || CurrentUser.IsAdmin);
+    }
     
     public BugDetailsViewModel(IBugService bugService, IBugCommentService commentService, IUserService userService)
     {
@@ -61,8 +80,6 @@ public partial class BugDetailsViewModel : ObservableObject
         Bug = await _bugService.GetAsync(id);
         Comments = [ ..await _commentService.GetByBugAsync(Bug) ];
         PageTitle = $"#{Bug.Id} {Bug.Title}";
-        CommentCommand.NotifyCanExecuteChanged();
-        MarkAsDoneCommand.NotifyCanExecuteChanged();
         IsLoading = false;
     }
 
@@ -96,6 +113,40 @@ public partial class BugDetailsViewModel : ObservableObject
 
     [RelayCommand(CanExecute = nameof(AllowedToComment))]
     private async Task Comment()
+    {
+        var result = await Application.Current!.MainPage.DisplayPromptAsync(
+            title: UIElements.CommentPrompt.Title,
+            message: UIElements.CommentPrompt.Message,
+            accept: UIElements.CommentPrompt.ConfirmText,
+            cancel: UIElements.CommentPrompt.CancelText,
+            placeholder: UIElements.CommentPrompt.PlaceholderText,
+            maxLength: UIElements.CommentPrompt.MaxLength,
+            keyboard: Keyboard.Chat,
+            initialValue: UIElements.CommentPrompt.InitialValue
+        );
+        if (result == null) WeakReferenceMessenger.Default.Send("Reply must have contents");
+        else
+        {
+            try
+            {
+                await _commentService.CreateAsync(result, CurrentUser, Bug);
+                await this.InitDetails(Bug.Id);
+            }
+            catch (Exception ex)
+            {
+                WeakReferenceMessenger.Default.Send(ex.Message);
+            }
+        }
+    }
+
+    [RelayCommand(CanExecute = nameof(AllowedToEditComment))]
+    private async Task EditComment(BugComment comment)
+    {
+        
+    }
+
+    [RelayCommand(CanExecute = nameof(AllowedToDeleteComment))]
+    private async Task DeleteComment(BugComment comment)
     {
         
     }

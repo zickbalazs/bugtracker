@@ -15,6 +15,15 @@
         <ToolbarItem Text="Report Bug"
                      IconImageSource="add.png"
                      Command="{Binding CreateBugCommand}"/>
+        <ToolbarItem Text="View Bug"
+                     IconImageSource="comment.png"
+                     Command="{Binding ViewBugCommand}"/>
+        <ToolbarItem Text="Edit Bug"
+                     IconImageSource="edit.png"
+                     Command="{Binding EditBugCommand}"/>
+        <ToolbarItem Text="Delete Bug"
+                     IconImageSource="delete.png"
+                     Command="{Binding DeleteBugCommand}"/>
     </ContentPage.ToolbarItems>
     <ContentPage.Content>
         <ScrollView>
@@ -22,27 +31,19 @@
                 <ActivityIndicator IsVisible="{Binding LoadingFromDb}" 
                                    IsRunning="{Binding LoadingFromDb}"
                                    HorizontalOptions="Center"
-                                   VerticalOptions="Center"/>
+                                   VerticalOptions="Center"
+                                   Margin="0,100"/>
                 <Label Text="No bugs yet :)"
                        IsVisible="{Binding NoBugsAtAll}"
                        Style="{StaticResource Headline}"
                        HorizontalOptions="Center"
-                       VerticalOptions="Center"/>
+                       VerticalOptions="Center"
+                       Margin="0,100"/>
                 <VerticalStackLayout IsVisible="{Binding  NoBugsAtAll, Converter={toolkit:InvertedBoolConverter}}">
-                    <Label Text="To-Do"
-                           IsVisible="{Binding HasUnsolved}"
-                           BackgroundColor="{AppThemeBinding
-                                Light={StaticResource White},
-                                Dark={StaticResource Black}}"/>
-                    <CollectionView ItemsSource="{Binding UnsolvedBugs}" 
-                                    ItemTemplate="{components:BugSummary}"/>
-                    <Label Text="Solved"
-                           IsVisible="{Binding HasSolved}"
-                           BackgroundColor="{AppThemeBinding
-                                Light={StaticResource White},
-                                Dark={StaticResource Black}}"/>
-                    <CollectionView ItemsSource="{Binding SolvedBugs}"
-                                    ItemTemplate="{components:BugSummary}"/>
+                    <CollectionView ItemsSource="{Binding Bugs}" 
+                                    ItemTemplate="{components:BugSummary}"
+                                    SelectionMode="Single"
+                                    SelectedItem="{Binding SelectedBug}"/>
                 </VerticalStackLayout>
             </VerticalStackLayout>
         </ScrollView>

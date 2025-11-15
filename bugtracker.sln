@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.Services", "Bugt
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.Main", "Bugtracker.Main\Bugtracker.Main.csproj", "{73F1E94A-E9A4-4069-B21D-6B7A45CC6987}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.MediaUpload", "Bugtracker.MediaUpload\Bugtracker.MediaUpload.csproj", "{48C81A00-E912-43CC-B73C-972523A00618}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,5 +42,9 @@ Global
 		{73F1E94A-E9A4-4069-B21D-6B7A45CC6987}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73F1E94A-E9A4-4069-B21D-6B7A45CC6987}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73F1E94A-E9A4-4069-B21D-6B7A45CC6987}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48C81A00-E912-43CC-B73C-972523A00618}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48C81A00-E912-43CC-B73C-972523A00618}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48C81A00-E912-43CC-B73C-972523A00618}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48C81A00-E912-43CC-B73C-972523A00618}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

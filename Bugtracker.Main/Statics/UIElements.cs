@@ -14,4 +14,15 @@ public static class UIElements
     
     //FONT
     public const string TextFont = "OpenSansRegular";
+
+    public struct CommentPrompt
+    {
+        public const string Title = "Write a reply";
+        public const string ConfirmText = "Send";
+        public const string CancelText = "Cancel";
+        public const string PlaceholderText = "Write your thoughts here.";
+        public const string Message = "";
+        public const string InitialValue = "";
+        public const int MaxLength = -1;
+    }
 }

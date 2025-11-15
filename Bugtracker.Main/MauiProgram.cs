@@ -45,7 +45,8 @@ public static class MauiProgram
             .AddTransient<BugsViewModel>()
             .AddTransient<BugDetailsViewModel>()
             .AddTransient<UserDataViewModel>()
-            .AddTransient<CreateBugViewModel>();
+            .AddTransient<CreateBugViewModel>()
+            .AddTransient<EditBugViewModel>();
         
         // PAGES
         builder.Services
@@ -56,8 +57,10 @@ public static class MauiProgram
             .AddSingleton<UserDataPage>();
         
         // SUBPAGES | BUGS
-        builder.Services.AddSingleton<BugDetailsPage>();
-        builder.Services.AddSingleton<CreateBugPage>();
+        builder.Services
+            .AddSingleton<BugDetailsPage>()
+            .AddSingleton<CreateBugPage>()
+            .AddSingleton<EditBugPage>();
         // SUBPAGES | COMMENTS
         
         // SUBPAGES | PRIORITIES

@@ -36,11 +36,17 @@ public class DbBugsService(BugtrackerContext ctx) : IBugService
 
     public async Task UpdateAsync(BugDto updateData, int id)
     {
-        await ctx.Bugs.Where(x => x.Id == id).ExecuteUpdateAsync(prop =>
-            prop.SetProperty(x => x.Description, updateData.Description)
-                .SetProperty(x => x.ShortDescription, updateData.ShortDescription)
-                .SetProperty(x => x.Title, updateData.Title)
-                .SetProperty(x => x.Priority, updateData.Priority));
+        var bugToEdit = await ctx.Bugs.FindAsync(id);
+
+        if (bugToEdit == null)
+            throw new KeyNotFoundException("bug with this id is not found!");
+
+        bugToEdit.Title = updateData.Title;
+        bugToEdit.ShortDescription = updateData.ShortDescription;
+        bugToEdit.Description = updateData.Description;
+        bugToEdit.Priority = updateData.Priority;
+
+        await ctx.SaveChangesAsync();
     }
 
     public async Task<List<Bug>> GetAllAsync()

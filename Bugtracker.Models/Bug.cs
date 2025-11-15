@@ -17,7 +17,7 @@ public class Bug
     [Required]
     public required string Description { get; set; }
     public bool Solved { get; set; }
-    public DateTime Created { get; } = DateTime.UtcNow;
+    public DateTime Created { get; set;  } = DateTime.UtcNow;
     public DateTime? SolvedOn { get; set; } = null;
 
     [Required]
