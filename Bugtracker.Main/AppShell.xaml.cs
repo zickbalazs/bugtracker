@@ -1,4 +1,5 @@
-﻿using Bugtracker.Main.Views.Bugs;
+﻿using Bugtracker.Main.ViewModels;
+using Bugtracker.Main.Views.Bugs;
 using Bugtracker.Main.Views.Priorities;
 
 namespace Bugtracker.Main;

@@ -26,7 +26,10 @@
                     IsVisible="{Binding IsLoading}"
                     IsRunning="{Binding IsLoading}"
                     Margin="0,100"/>
-                <Label/>
+                <Label Text="There are no priorities yet..."
+                       Margin="0, 100"
+                       Style="{StaticResource Headline}"
+                       IsVisible="{Binding NoPriorities}"/>
                 <CollectionView
                     ItemsSource="{Binding Priorities}"
                     SelectedItem="{Binding SelectedPriority}"

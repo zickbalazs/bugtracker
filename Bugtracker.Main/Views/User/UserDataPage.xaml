@@ -36,7 +36,8 @@
                 <HorizontalStackLayout Spacing="10">
                     <Button Text="Log out"
                             Command="{Binding LogoutCommand}"/>
-                    <Button Text="Delete Account"/>
+                    <Button Text="Delete Account"
+                            Command="{Binding DeleteCommand}"/>
                 </HorizontalStackLayout>
             </VerticalStackLayout>
         </VerticalStackLayout>

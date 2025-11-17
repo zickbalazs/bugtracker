@@ -15,6 +15,13 @@ public partial class BugsViewModel : ObservableObject
     private readonly IBugService _service;
     private readonly IUserService _userService;
     private readonly IPriorityService _priorityService;
+
+    [ObservableProperty,
+    NotifyCanExecuteChangedFor(nameof(ViewBugCommand)),
+    NotifyCanExecuteChangedFor(nameof(EditBugCommand)),
+    NotifyCanExecuteChangedFor(nameof(DeleteBugCommand)),
+    NotifyCanExecuteChangedFor(nameof(CreateBugCommand))] 
+    private bool internetAvailable = Connectivity.NetworkAccess == NetworkAccess.Internet;
     
     [ObservableProperty, 
      NotifyCanExecuteChangedFor(nameof(ViewBugCommand)), 
@@ -22,7 +29,7 @@ public partial class BugsViewModel : ObservableObject
      NotifyCanExecuteChangedFor(nameof(DeleteBugCommand))]
     private ObservableBug? selectedBug = null;
 
-    [ObservableProperty,
+    [ObservableProperty, 
      NotifyPropertyChangedFor(nameof(NoPriorities)),
     NotifyCanExecuteChangedFor(nameof(CreateBugCommand))]
     private int prioritiesCount = 0;
@@ -56,18 +63,21 @@ public partial class BugsViewModel : ObservableObject
     public bool NoBugsAtAll => Bugs.Count == 0 && !LoadingFromDb && !NoPriorities;
     public bool NoPriorities => !LoadingFromDb && PrioritiesCount < 1;
 
-    private bool ThereArePriorities() => !LoadingFromDb && PrioritiesCount > 0;
+    private bool ThereArePriorities() => !LoadingFromDb && PrioritiesCount > 0 && InternetAvailable;
     
     
-    private bool SelectedBugNotNull() => !LoadingFromDb && SelectedBug != null;
+    private bool SelectedBugNotNull() => !LoadingFromDb && InternetAvailable && SelectedBug != null;
     private bool AllowedToEditSelected() => SelectedBugNotNull() && 
                                             (SelectedBug!.Author.Id == CurrentUser.Id || CurrentUser.IsAdmin) &&
-                                            !SelectedBug.Solved; 
+                                            !SelectedBug.Solved && 
+                                            InternetAvailable; 
     public BugsViewModel(IBugService service, IUserService userService, IPriorityService priorityService)
     {
         _service = service;
         _userService = userService;
         _priorityService = priorityService;
+        Connectivity.ConnectivityChanged +=
+            (_, args) => InternetAvailable = args.NetworkAccess == NetworkAccess.Internet;
         GetBugs();
     }
 
@@ -84,18 +94,21 @@ public partial class BugsViewModel : ObservableObject
     private async Task ViewBug()
     {
         await Shell.Current.GoToAsync($"bugdetails?id={SelectedBug!.Id}");
+        SelectedBug = null;
     }
 
     [RelayCommand(CanExecute = nameof(ThereArePriorities))]
     private async Task CreateBug()
     {
         await Shell.Current.GoToAsync("createBug");
+        SelectedBug = null;
     }
 
     [RelayCommand(CanExecute = nameof(AllowedToEditSelected))]
     private async Task EditBug()
     {
         await Shell.Current.GoToAsync($"editBug?id={SelectedBug!.Id}");
+        SelectedBug = null;
     }
 
     [RelayCommand(CanExecute = nameof(AllowedToEditSelected))]
@@ -105,6 +118,7 @@ public partial class BugsViewModel : ObservableObject
         {
             await _service.DeleteAsync(SelectedBug.Id);
             await GetBugs();
+            SelectedBug = null;
         }
         catch (Exception ex)
         {

@@ -3,6 +3,7 @@ using Bugtracker.Main.Models;
 using Bugtracker.Main.Statics;
 using Bugtracker.Models;
 using Bugtracker.Services;
+using CommunityToolkit.Maui.Alerts;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using CommunityToolkit.Mvvm.Messaging;
@@ -28,10 +29,12 @@ public partial class PrioritiesViewModel : ObservableObject
 
     [ObservableProperty,
     NotifyCanExecuteChangedFor(nameof(EditCommand)),
-    NotifyCanExecuteChangedFor(nameof(DeleteCommand))] 
+    NotifyCanExecuteChangedFor(nameof(DeleteCommand)),
+    NotifyPropertyChangedFor(nameof(NoPriorities))] 
     private bool isLoading = true;
     
-    [ObservableProperty] 
+    [ObservableProperty,
+    NotifyPropertyChangedFor(nameof(NoPriorities))] 
     private ObservableCollection<ObservablePriority> priorities = [];
 
 
@@ -61,11 +64,15 @@ public partial class PrioritiesViewModel : ObservableObject
     {
         InternetAvailable = args.NetworkAccess == NetworkAccess.Internet;        
         AddPriorityCommand.NotifyCanExecuteChanged();
+        EditCommand.NotifyCanExecuteChanged();
+        DeleteCommand.NotifyCanExecuteChanged();
     }
 
-    private bool DoesntHavePosts() => !IsLoading && SelectedPriority is { Bugs.Count: < 1 };
+    private bool DoesntHavePosts() => !IsLoading && InternetAvailable && SelectedPriority is { Bugs.Count: < 1 };
 
-    private bool CanEdit() => !IsLoading && SelectedPriority != null && CurrentUser.IsAdmin;
+    private bool CanEdit() => !IsLoading && InternetAvailable && SelectedPriority != null && CurrentUser.IsAdmin;
+
+    public bool NoPriorities => !IsLoading && Priorities.Count < 1;
     
     [RelayCommand(CanExecute = nameof(InternetAvailable))]
     private async Task AddPriority()

@@ -15,6 +15,9 @@ public partial class BugDetailsViewModel : ObservableObject
     private readonly IBugCommentService _commentService;
     private readonly IUserService _userService;
 
+    [ObservableProperty, NotifyPropertyChangedFor(nameof(InternetAvailable))] 
+    private bool internetIsAvailable = Connectivity.Current.NetworkAccess == NetworkAccess.Internet;
+    
     [ObservableProperty, 
      NotifyCanExecuteChangedFor(nameof(MarkAsDoneCommand)),
      NotifyCanExecuteChangedFor(nameof(CommentCommand)),
@@ -67,6 +70,8 @@ public partial class BugDetailsViewModel : ObservableObject
     
     public bool HasComments => Comments.Count > 0;
 
+    private bool InternetAvailable => InternetIsAvailable;
+    
     private bool AllowedToComment()
     {
         return !IsLoading && !Bug.Solved;
@@ -94,6 +99,8 @@ public partial class BugDetailsViewModel : ObservableObject
         _bugService = bugService;
         _commentService = commentService;
         _userService = userService;
+        Connectivity.ConnectivityChanged +=
+            (_, args) => InternetIsAvailable = args.NetworkAccess == NetworkAccess.Internet;
     }
 
     public async Task InitDetails(int id)
@@ -152,7 +159,7 @@ public partial class BugDetailsViewModel : ObservableObject
         {
             try
             {
-                await _commentService.CreateAsync(result, CurrentUser, dtoBug);
+                await _commentService.CreateAsync(result, CurrentUser, await _bugService.GetAsync(Bug.Id));
                 await this.InitDetails(Bug.Id);
             }
             catch (Exception ex)
@@ -172,5 +179,11 @@ public partial class BugDetailsViewModel : ObservableObject
     private async Task DeleteComment(BugComment comment)
     {
         
+    }
+
+    [RelayCommand(CanExecute = nameof(InternetAvailable))]
+    private async Task OpenFileInBrowser()
+    {
+        await Browser.Default.OpenAsync($"{AuthData.BackendUrl}/storage/{Bug.AssociatedFileName}");
     }
 }

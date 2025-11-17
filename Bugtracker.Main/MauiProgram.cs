@@ -49,7 +49,8 @@ public static class MauiProgram
             .AddTransient<EditBugViewModel>()
             .AddTransient<PrioritiesViewModel>()
             .AddTransient<PriorityAddViewModel>()
-            .AddTransient<EditPriorityViewModel>();
+            .AddTransient<EditPriorityViewModel>()
+            .AddSingleton<ConnectionViewModel>();
         
         // PAGES
         builder.Services

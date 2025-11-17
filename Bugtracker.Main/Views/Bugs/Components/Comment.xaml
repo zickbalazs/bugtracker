@@ -6,14 +6,15 @@
              xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
              x:Class="Bugtracker.Main.Views.Bugs.Components.Comment"
              x:DataType="models:BugComment">
-    
-        <Border StrokeShape="RoundRectangle 10,10,10,10">
-            <VerticalStackLayout Padding="25">
-                <Label  Text="{Binding Author.Name}"
-                        TextColor="{AppThemeBinding
+            <Border StrokeShape="RoundRectangle 5,5,5,5"
+                    Padding="10"
+                    Margin="0,10">
+                <VerticalStackLayout>
+                    <Label  Text="{Binding Author.Name}"
+                            TextColor="{AppThemeBinding
                           Dark={StaticResource PrimaryDark},
                           Light={StaticResource Primary}}"/>
-                <Label Text="{Binding Description}"/>
-        </VerticalStackLayout>            
-    </Border>    
+                    <Label Text="{Binding Description}" />
+                </VerticalStackLayout>            
+            </Border>        
 </DataTemplate>

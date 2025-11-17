@@ -11,9 +11,11 @@ namespace Bugtracker.Main.Services;
 
 public class DbUserService(BugtrackerContext ctx) : IUserService
 {
-    public Task DeleteUserAsync(int id)
+    public async Task DeleteUserAsync(int id)
     {
-        throw new NotImplementedException();
+        var user = await ctx.Users.FindAsync(id) ?? throw new KeyNotFoundException("User with this id is not found!");
+        ctx.Users.Remove(user);
+        await ctx.SaveChangesAsync();
     }
 
     public async Task<bool> LoginAsync(LoginForm loginData)

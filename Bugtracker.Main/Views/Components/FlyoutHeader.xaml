@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:consts="clr-namespace:Bugtracker.Main.Statics"
+             x:Class="Bugtracker.Main.Views.Components.FlyoutHeader"
+             BackgroundColor="{AppThemeBinding
+               Dark={StaticResource Gray950},
+               Light={StaticResource White}}">
+    <VerticalStackLayout>
+        <Label Text="Bugtracker"
+               FontSize="{x:Static consts:UIElements.H1TextSize}"
+               Padding="10,40"/>
+        <Border/>
+    </VerticalStackLayout>
+</ContentView>

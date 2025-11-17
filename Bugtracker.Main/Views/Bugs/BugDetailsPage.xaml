@@ -30,7 +30,6 @@
                                    IsVisible="{Binding IsLoading}" VerticalOptions="Center"/>
                 <VerticalStackLayout IsVisible="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}">
                     <markdown:MarkdownView
-                        Padding="25"
                         TextColor="{AppThemeBinding 
                             Light={StaticResource Black},
                             Dark={StaticResource  White}}"
@@ -64,15 +63,18 @@
                         TextFontSize="{x:Static consts:UIElements.TextSize}"
                         TextFontFace="{x:Static consts:UIElements.TextFont}"
                         MarkdownText="{Binding Bug.Description}"/>
-                    
-                    <Grid Margin="15"
-                          ColumnDefinitions="Auto, *"
+                    <Label IsVisible="{Binding FileExists}" 
+                           Text="Attached File"
+                           Margin="0,10"
+                           FontSize="{x:Static consts:UIElements.H2TextSize}"/>
+                    <Grid ColumnDefinitions="Auto, *"
                           VerticalOptions="Center"
                           IsVisible="{Binding FileExists}">
                         <ImageButton
                             MaximumHeightRequest="24"
                             Grid.Column="0" 
-                            Source="attachment.png">
+                            Source="attachment.png"
+                            Command="{Binding OpenFileInBrowserCommand}">
                             <ImageButton.Behaviors>
                                 <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding
                                   Dark={StaticResource PrimaryDark},
@@ -83,17 +85,17 @@
                             Text="{Binding Bug.AssociatedFileName}"
                             TextColor="{AppThemeBinding 
                               Dark={StaticResource PrimaryDark},
-                              Light={StaticResource Primary}}"/>
+                              Light={StaticResource Primary}}"
+                            VerticalOptions="Center"/>
                     </Grid>
-                    
                     <Label Text="Comments" 
-                           Style="{StaticResource SubHeadlineLeft}"
                            IsVisible="{Binding HasComments}"
-                           Margin="15" />
+                           FontSize="{x:Static consts:UIElements.H2TextSize}"
+                           Margin="0, 10"/>
                     <CollectionView ItemsSource="{Binding Comments}" 
                                     ItemTemplate="{components:Comment}"
                                     IsVisible="{Binding HasComments}"/>
-                    <Label Margin="15"
+                    <Label Margin="0,10"
                            Text="{Binding Bug.SolvedOn, Converter={converters:SolvedDateToStringConverter}}" IsVisible="{Binding Bug.Solved}"/>
                 </VerticalStackLayout>
             </VerticalStackLayout>

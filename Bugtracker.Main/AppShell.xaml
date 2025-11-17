@@ -3,25 +3,35 @@
     x:Class="Bugtracker.Main.AppShell"
     xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
     xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:components="clr-namespace:Bugtracker.Main.Views.Components"
     xmlns:bugs="using:Bugtracker.Main.Views.Bugs"
     xmlns:priorities="using:Bugtracker.Main.Views.Priorities"
     xmlns:account="using:Bugtracker.Main.Views.User"
-    Title="Bugtracker"
-    TabBarIsVisible="True"
-    NavBarIsVisible="True">
-    <TabBar IsVisible="True">
-        <Tab Title="Bugs"
-             Icon="bug.png">
-            <ShellContent ContentTemplate="{DataTemplate bugs:AllBugsPage}"
-                          Title="All Bugs"/>
-        </Tab>
-        <Tab Title="Priorities"
-             Icon="priority.png">
-            <ShellContent ContentTemplate="{DataTemplate priorities:PrioritiesMainPage}"/>
-        </Tab>
-        <Tab Title="Account"
-             Icon="account.png">
-            <ShellContent ContentTemplate="{DataTemplate account:UserDataPage}"/>
-        </Tab>
-    </TabBar>
+    xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
+    Title="Bugtracker">
+    <Shell.BindingContext>
+        <viewModels:ConnectionViewModel/>
+    </Shell.BindingContext>
+    <Shell.FlyoutHeader>
+        <components:FlyoutHeader/>
+    </Shell.FlyoutHeader>
+    <Shell.FlyoutFooter>
+        <components:FlyoutFooter/>
+    </Shell.FlyoutFooter>
+    
+    <FlyoutItem Title="Bugs"
+                FlyoutIcon="bug.png">
+            <ShellContent Title="Bugs"
+                          ContentTemplate="{DataTemplate bugs:AllBugsPage}"/>
+    </FlyoutItem>
+    <FlyoutItem Title="Priorities"
+                FlyoutIcon="priority.png">
+        <ShellContent ContentTemplate="{DataTemplate priorities:PrioritiesMainPage}"
+                      Title="Priorities"/>
+    </FlyoutItem>    
+    <FlyoutItem Title="My Account"
+                FlyoutIcon="account.png">
+        <ShellContent ContentTemplate="{DataTemplate account:UserDataPage}"
+                      Title="My Account"/>
+    </FlyoutItem>    
 </Shell>

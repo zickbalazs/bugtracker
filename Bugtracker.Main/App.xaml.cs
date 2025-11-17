@@ -1,4 +1,5 @@
 ﻿using Bugtracker.Main.Statics;
+using Bugtracker.Main.ViewModels;
 using Bugtracker.Main.Views.Auth;
 
 namespace Bugtracker.Main;
