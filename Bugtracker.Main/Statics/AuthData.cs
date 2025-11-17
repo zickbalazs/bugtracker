@@ -7,7 +7,6 @@ public static class AuthData
     public const string BackendUrl = "https://server.zick.hu";
     
     private const string SecureStorageUserEmailKey = "userEmail";
-    private const string DatabaseUrl = "ginal.duckdns.org";
 
     public static string GetEmail()
     {

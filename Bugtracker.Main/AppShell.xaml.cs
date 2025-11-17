@@ -8,9 +8,12 @@ public partial class AppShell : Shell
     public AppShell()
     {
         InitializeComponent();
-        Routing.RegisterRoute("createPriority", typeof(AddPriorityPage));
+        // BUGS - SUBPAGES
         Routing.RegisterRoute("bugdetails", typeof(BugDetailsPage));
         Routing.RegisterRoute("createBug", typeof(CreateBugPage));
         Routing.RegisterRoute("editBug", typeof(EditBugPage));
+        // PRIORITY - SUBPAGES
+        Routing.RegisterRoute("createPriority", typeof(AddPriorityPage));
+        Routing.RegisterRoute("editPriority", typeof(EditPriorityPage));
     }
 }

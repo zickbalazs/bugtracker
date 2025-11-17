@@ -26,12 +26,13 @@
                     IsVisible="{Binding IsLoading}"
                     IsRunning="{Binding IsLoading}"
                     Margin="0,100"/>
+                <Label/>
                 <CollectionView
                     ItemsSource="{Binding Priorities}"
-                    ItemTemplate="{components:PriorityTemplate}"
                     SelectedItem="{Binding SelectedPriority}"
+                    IsVisible="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}"        
                     SelectionMode="Single"
-                    IsVisible="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}"/>        
+                    ItemTemplate="{components:PriorityTemplate}" />
             </VerticalStackLayout>
         </ScrollView>
         

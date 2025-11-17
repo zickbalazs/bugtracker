@@ -48,7 +48,8 @@ public static class MauiProgram
             .AddTransient<CreateBugViewModel>()
             .AddTransient<EditBugViewModel>()
             .AddTransient<PrioritiesViewModel>()
-            .AddTransient<PriorityAddViewModel>();
+            .AddTransient<PriorityAddViewModel>()
+            .AddTransient<EditPriorityViewModel>();
         
         // PAGES
         builder.Services
@@ -67,7 +68,8 @@ public static class MauiProgram
         
         // SUBPAGES | PRIORITIES
         builder.Services
-            .AddTransient<AddPriorityPage>();
+            .AddTransient<AddPriorityPage>()
+            .AddTransient<EditPriorityPage>();
 #if DEBUG
         builder.Logging.AddDebug();
 #endif

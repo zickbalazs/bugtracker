@@ -18,9 +18,9 @@ public class DbPriorityService(BugtrackerContext ctx) : IPriorityService
         await ctx.SaveChangesAsync();
     }
 
-    public Task<Priority> GetAsync(int id)
+    public async Task<Priority> GetAsync(int id)
     {
-        throw new NotImplementedException();
+        return await ctx.Priorities.FindAsync(id);
     }
 
     public async Task<IList<Priority>> GetAllAsync()
