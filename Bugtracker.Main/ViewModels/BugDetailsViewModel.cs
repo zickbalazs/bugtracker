@@ -1,4 +1,5 @@
-﻿using Bugtracker.Main.Statics;
+﻿using Bugtracker.Main.Models;
+using Bugtracker.Main.Statics;
 using Bugtracker.Main.Views.Auth;
 using Bugtracker.Models;
 using Bugtracker.Services;
@@ -23,15 +24,21 @@ public partial class BugDetailsViewModel : ObservableObject
     
     [ObservableProperty, 
      NotifyCanExecuteChangedFor(nameof(MarkAsDoneCommand)),
-     NotifyCanExecuteChangedFor(nameof(CommentCommand))]
-    private Bug bug = new Bug()
+     NotifyCanExecuteChangedFor(nameof(CommentCommand)),
+     NotifyPropertyChangedFor(nameof(FileExists))]
+    private ObservableBug bug =new ObservableBug()
     {
-        Title = "Loading",
-        Description = "Loading",
-        ShortDescription = "Loading",
+        Title = string.Empty,
+        Description = string.Empty,
+        ShortDescription = string.Empty,
+        AssociatedFileName = "",
+        Author = new User(){},
+        Comments = [],
+        Created = DateTime.Now,
+        Id = -1,
+        Priority = new Priority(){Id=-1, ColorCode = "#fff", Title = string.Empty},
         Solved = false,
-        SolvedOn = DateTime.Now,
-        Author = new User()
+        SolvedOn = null,
     };
     
     [ObservableProperty, 
@@ -42,7 +49,21 @@ public partial class BugDetailsViewModel : ObservableObject
     [ObservableProperty, NotifyPropertyChangedFor(nameof(HasComments))]
     private List<BugComment> comments = [];
     [ObservableProperty] private string pageTitle = "Loading Bug Details...";
-    
+
+
+    private Bug dtoBug => new()
+    {
+        Title = Bug.Title,
+        Description = Bug.Description,
+        ShortDescription = Bug.ShortDescription,
+        AssociatedFileName = Bug.AssociatedFileName,
+        Author = Bug.Author,
+        Created = Bug.Created,
+        Id = Bug.Id,
+        Priority = Bug.Priority,
+        Solved = Bug.Solved,
+        SolvedOn = Bug.SolvedOn
+    };
     
     public bool HasComments => Comments.Count > 0;
 
@@ -51,6 +72,8 @@ public partial class BugDetailsViewModel : ObservableObject
         return !IsLoading && !Bug.Solved;
     }
 
+    public bool FileExists => Bug.AssociatedFileName != null;
+    
     private bool AllowedToClose()
     {
         return !IsLoading && !Bug.Solved && (Bug.Author.Id == CurrentUser.Id || CurrentUser.IsAdmin);
@@ -77,8 +100,8 @@ public partial class BugDetailsViewModel : ObservableObject
     {
         IsLoading = true;
         await GetUser();
-        Bug = await _bugService.GetAsync(id);
-        Comments = [ ..await _commentService.GetByBugAsync(Bug) ];
+        Bug = ObservableBug.Parse(await _bugService.GetAsync(id));
+        Comments = [ ..await _commentService.GetByBugAsync(dtoBug) ];
         PageTitle = $"#{Bug.Id} {Bug.Title}";
         IsLoading = false;
     }
@@ -129,7 +152,7 @@ public partial class BugDetailsViewModel : ObservableObject
         {
             try
             {
-                await _commentService.CreateAsync(result, CurrentUser, Bug);
+                await _commentService.CreateAsync(result, CurrentUser, dtoBug);
                 await this.InitDetails(Bug.Id);
             }
             catch (Exception ex)

@@ -12,4 +12,6 @@ public class BugDto
     public required string Description { get; set; }
     [Required]
     public required Priority Priority { get; set; }
+    
+    public string? FileName { get; set; }
 }

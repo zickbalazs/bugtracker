@@ -2,8 +2,38 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="Bugtracker.Main.Views.Priorities.PrioritiesMainPage">
+             xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
+             xmlns:components="clr-namespace:Bugtracker.Main.Views.Priorities.Components"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Bugtracker.Main.Views.Priorities.PrioritiesMainPage"
+             x:DataType="viewModels:PrioritiesViewModel"
+             Title="Priorities">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Add Priority"
+                     IconImageSource="add.png"
+                     Command="{Binding AddPriorityCommand}"/>
+        <ToolbarItem Text="Delete Priority"
+                     IconImageSource="delete.png"
+                     Command="{Binding DeleteCommand}"/>
+        <ToolbarItem Text="Modify Priority"
+                     IconImageSource="edit.png"
+                     Command="{Binding EditCommand}"/>
+    </ContentPage.ToolbarItems>
     <ContentPage.Content>
+        <ScrollView>
+            <VerticalStackLayout>
+                <ActivityIndicator
+                    IsVisible="{Binding IsLoading}"
+                    IsRunning="{Binding IsLoading}"
+                    Margin="0,100"/>
+                <CollectionView
+                    ItemsSource="{Binding Priorities}"
+                    ItemTemplate="{components:PriorityTemplate}"
+                    SelectedItem="{Binding SelectedPriority}"
+                    SelectionMode="Single"
+                    IsVisible="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}"/>        
+            </VerticalStackLayout>
+        </ScrollView>
         
     </ContentPage.Content>
 </ContentPage>

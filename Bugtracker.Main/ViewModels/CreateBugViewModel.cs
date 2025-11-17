@@ -37,9 +37,14 @@ public partial class CreateBugViewModel : ObservableValidator
     [ObservableProperty] 
     private List<Priority> priorities = [];
 
+    [ObservableProperty, NotifyPropertyChangedFor(nameof(CanClearFile))] 
+    private FileResult? uploadedFile = null;
+    
     [ObservableProperty]
     private bool isLoading = true;
 
+    public bool CanClearFile => UploadedFile != null;
+    
     public CreateBugViewModel(IBugService bugService, IPriorityService priorityService, IUserService userService)
     {
         _bugService = bugService;
@@ -72,9 +77,34 @@ public partial class CreateBugViewModel : ObservableValidator
             Title = this.Title,
             Description = this.Details,
             ShortDescription = this.ShortDesc,
-            Priority = this.AssignedPriority
+            Priority = this.AssignedPriority,
+            FileName = UploadedFile?.FileName
         };
-    
+
+    [RelayCommand]
+    private async Task UploadFile()
+    {
+        var filePicked = await FilePicker.Default.PickAsync();
+
+        if (filePicked != null)
+        {
+            UploadedFile = filePicked;
+        }
+    }
+
+    [RelayCommand]
+    private void EmptyFile()
+    {
+        this.UploadedFile = null;
+    }
+
+    private void EmptyForm()
+    {
+        this.Title = string.Empty;
+        this.ShortDesc = string.Empty;
+        this.Details = string.Empty;
+        this.AssignedPriority = null;
+    }
     
     [RelayCommand]
     private async Task UploadEntry()
@@ -87,11 +117,16 @@ public partial class CreateBugViewModel : ObservableValidator
             {
                 Application.Current!.Windows[0].Page = new LoginShell();
             }
-
             else
             {
+                if (UploadedFile != null)
+                {
+                    var result = await WebHelper.UploadImage(UploadedFile);
+                    this.UploadedFile.FileName = result;
+                }
                 var user = await _userService.GetUserByEmail(userKey);
                 await _bugService.CreateAsync(BugDto, user.Id);
+                EmptyForm();
                 await Shell.Current.GoToAsync("..//");
             }
         }

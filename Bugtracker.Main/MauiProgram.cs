@@ -32,7 +32,7 @@ public static class MauiProgram
         builder.Services
             .AddDbContext<BugtrackerContext>(opt =>
                 opt.UseNpgsql(
-                    "Server=ginal.duckdns.org;Port=5432;Database=bugtracker;User Id=bugtracker;Password=bugtracker;"))
+                    "Server=zick.hu;Port=5432;Database=bugtracker;User Id=bugtracker;Password=bugtracker;"))
             .AddScoped<IUserService, DbUserService>()
             .AddScoped<IBugService, DbBugsService>()
             .AddScoped<IBugCommentService, DbCommentService>()
@@ -46,25 +46,28 @@ public static class MauiProgram
             .AddTransient<BugDetailsViewModel>()
             .AddTransient<UserDataViewModel>()
             .AddTransient<CreateBugViewModel>()
-            .AddTransient<EditBugViewModel>();
+            .AddTransient<EditBugViewModel>()
+            .AddTransient<PrioritiesViewModel>()
+            .AddTransient<PriorityAddViewModel>();
         
         // PAGES
         builder.Services
             .AddSingleton<LoginPage>()
             .AddSingleton<RegistrationPage>()
-            .AddSingleton<AllBugsPage>()
-            .AddSingleton<PrioritiesMainPage>()
-            .AddSingleton<UserDataPage>();
+            .AddTransient<AllBugsPage>()
+            .AddTransient<PrioritiesMainPage>()
+            .AddTransient<UserDataPage>();
         
         // SUBPAGES | BUGS
         builder.Services
-            .AddSingleton<BugDetailsPage>()
+            .AddTransient<BugDetailsPage>()
             .AddSingleton<CreateBugPage>()
-            .AddSingleton<EditBugPage>();
+            .AddTransient<EditBugPage>();
         // SUBPAGES | COMMENTS
         
         // SUBPAGES | PRIORITIES
-        
+        builder.Services
+            .AddTransient<AddPriorityPage>();
 #if DEBUG
         builder.Logging.AddDebug();
 #endif

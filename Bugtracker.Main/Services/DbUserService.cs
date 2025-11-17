@@ -41,7 +41,8 @@ public class DbUserService(BugtrackerContext ctx) : IUserService
         {
             Email = registrationData.Email,
             Name = registrationData.Username,
-            Password = HashString(registrationData.Password)
+            Password = HashString(registrationData.Password),
+            IsAdmin = !ctx.Users.Any(x=>x.IsAdmin)
         });
         await ctx.SaveChangesAsync();
     }

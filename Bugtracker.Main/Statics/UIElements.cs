@@ -25,4 +25,10 @@ public static class UIElements
         public const string InitialValue = "";
         public const int MaxLength = -1;
     }
+
+    
+}
+public struct PriorityStyles
+{
+    public const double Size = 10;
 }

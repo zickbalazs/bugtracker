@@ -64,6 +64,28 @@
                         TextFontSize="{x:Static consts:UIElements.TextSize}"
                         TextFontFace="{x:Static consts:UIElements.TextFont}"
                         MarkdownText="{Binding Bug.Description}"/>
+                    
+                    <Grid Margin="15"
+                          ColumnDefinitions="Auto, *"
+                          VerticalOptions="Center"
+                          IsVisible="{Binding FileExists}">
+                        <ImageButton
+                            MaximumHeightRequest="24"
+                            Grid.Column="0" 
+                            Source="attachment.png">
+                            <ImageButton.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding
+                                  Dark={StaticResource PrimaryDark},
+                                  Light={StaticResource Primary}}"/>
+                            </ImageButton.Behaviors>
+                        </ImageButton>
+                        <Label Grid.Column="1" 
+                            Text="{Binding Bug.AssociatedFileName}"
+                            TextColor="{AppThemeBinding 
+                              Dark={StaticResource PrimaryDark},
+                              Light={StaticResource Primary}}"/>
+                    </Grid>
+                    
                     <Label Text="Comments" 
                            Style="{StaticResource SubHeadlineLeft}"
                            IsVisible="{Binding HasComments}"
@@ -71,7 +93,8 @@
                     <CollectionView ItemsSource="{Binding Comments}" 
                                     ItemTemplate="{components:Comment}"
                                     IsVisible="{Binding HasComments}"/>
-                    <Label Text="{Binding Bug.SolvedOn, Converter={converters:SolvedDateToStringConverter}}" IsVisible="{Binding Bug.Solved}"/>
+                    <Label Margin="15"
+                           Text="{Binding Bug.SolvedOn, Converter={converters:SolvedDateToStringConverter}}" IsVisible="{Binding Bug.Solved}"/>
                 </VerticalStackLayout>
             </VerticalStackLayout>
         </ScrollView>

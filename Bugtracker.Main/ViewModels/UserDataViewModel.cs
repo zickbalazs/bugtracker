@@ -27,7 +27,7 @@ public partial class UserDataViewModel : ObservableObject
         Preferences.Clear();
     }
 
-    private async Task GetCurrentUser()
+    public async Task GetCurrentUser()
     {
         var email = AuthData.GetEmail();
 

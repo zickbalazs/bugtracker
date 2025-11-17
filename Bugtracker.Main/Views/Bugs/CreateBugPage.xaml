@@ -23,6 +23,36 @@
                 <Editor MinimumHeightRequest="100" Text="{Binding Details}"/>
             </VerticalStackLayout>
             <VerticalStackLayout Spacing="5">
+                <Label Text="Upload a file related to the bug (optional):"/>
+                <Grid ColumnDefinitions="Auto, *, Auto" VerticalOptions="Center" ColumnSpacing="10">
+                    <Button Text="Attach"
+                            Grid.Column="0"
+                            ImageSource="add_file.png"
+                            Command="{Binding UploadFileCommand}">
+                        <Button.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding 
+                            Dark={StaticResource PrimaryDarkText},
+                            Light={StaticResource White}}"/>
+                        </Button.Behaviors>
+                    </Button>
+                    <Label Grid.Column="1"
+                           Text="{Binding UploadedFile.FileName}"
+                           VerticalOptions="Center"/>
+                    <ImageButton Source="close.png"
+                                 Grid.Column="2"
+                                 IsOpaque="True"
+                                 IsVisible="{Binding CanClearFile}"
+                                 MaximumHeightRequest="24"
+                                 Command="{Binding EmptyFileCommand}">
+                        <ImageButton.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding 
+                                Dark={StaticResource PrimaryDark},
+                                Light={StaticResource Primary}}"/>
+                        </ImageButton.Behaviors>
+                    </ImageButton>
+                </Grid>
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="5">
                 <ActivityIndicator IsRunning="{Binding IsLoading}"
                                    IsVisible="{Binding IsLoading}"/>
                 <Label Text="Priority"
@@ -31,9 +61,19 @@
                         SelectedItem="{Binding AssignedPriority}"
                         IsVisible="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}"/>
             </VerticalStackLayout>
-            <Button Text="Report"
-                    IsEnabled="{Binding IsFormCorrect}"
-                    Command="{Binding UploadEntryCommand}"/>
+            <Grid ColumnDefinitions="Auto, *">
+                <Button Text="Report"
+                        ImageSource="add.png"
+                        Grid.Column="0"
+                        IsEnabled="{Binding IsFormCorrect}"
+                        Command="{Binding UploadEntryCommand}">
+                    <Button.Behaviors>
+                        <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding 
+                      Dark={StaticResource PrimaryDarkText},
+                      Light={StaticResource White}}"/>
+                    </Button.Behaviors>
+                </Button>    
+            </Grid>
         </VerticalStackLayout>
     </ContentPage.Content>
 </ContentPage>

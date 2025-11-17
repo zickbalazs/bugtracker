@@ -22,6 +22,7 @@ public class DbBugsService(BugtrackerContext ctx) : IBugService
             ShortDescription = newBug.ShortDescription,
             Solved = false,
             Priority = newBug.Priority,
+            AssociatedFileName = newBug.FileName,
             Author = user
         };
 
@@ -31,7 +32,9 @@ public class DbBugsService(BugtrackerContext ctx) : IBugService
 
     public async Task DeleteAsync(int id)
     {
-        await ctx.Bugs.Where(x => x.Id == id).ExecuteDeleteAsync();
+        var bug = await ctx.Bugs.FindAsync(id);
+        ctx.Bugs.Remove(bug ?? throw new KeyNotFoundException("bug with this id is not found"));
+        await ctx.SaveChangesAsync();
     }
 
     public async Task UpdateAsync(BugDto updateData, int id)
@@ -70,12 +73,9 @@ public class DbBugsService(BugtrackerContext ctx) : IBugService
 
     public async Task MarkBugAsSolved(int id)
     {
-        var rowsAffected = await ctx.Bugs.Where(x => x.Id == id)
-            .ExecuteUpdateAsync(obj=>
-                obj.SetProperty(x=>x.Solved, true)
-                   .SetProperty(x=>x.SolvedOn, DateTime.UtcNow));
-
-        if (rowsAffected < 1)
-            throw new KeyNotFoundException();
+        var bug = await ctx.Bugs.FindAsync(id) ?? throw new KeyNotFoundException("bug with this id is not found");
+        bug.Solved = true;
+        bug.SolvedOn = DateTime.UtcNow;
+        await ctx.SaveChangesAsync();
     }
 }

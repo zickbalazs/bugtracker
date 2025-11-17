@@ -14,4 +14,9 @@ public partial class UserDataPage : ContentPage
         InitializeComponent();
         BindingContext = vm;
     }
+
+    protected override void OnAppearing()
+    {
+        ((UserDataViewModel)BindingContext).GetCurrentUser();
+    }
 }

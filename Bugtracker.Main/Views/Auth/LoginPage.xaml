@@ -18,7 +18,8 @@
                 <VerticalStackLayout Spacing="5" 
                                      Padding="15">
                     <Label Text="Password:"/>
-                    <Entry Text="{Binding Password}"/>
+                    <Entry Text="{Binding Password}"
+                           IsPassword="True"/>
                 </VerticalStackLayout>
                 <HorizontalStackLayout Padding="15" 
                                        HorizontalOptions="Center">

@@ -16,6 +16,9 @@ public class Bug
     public required string ShortDescription { get; set; }
     [Required]
     public required string Description { get; set; }
+    
+    public string? AssociatedFileName { get; set; }
+    
     public bool Solved { get; set; }
     public DateTime Created { get; set;  } = DateTime.UtcNow;
     public DateTime? SolvedOn { get; set; } = null;

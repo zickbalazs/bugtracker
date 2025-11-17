@@ -1,4 +1,5 @@
 using System.Globalization;
+using Bugtracker.Main.Models;
 using Bugtracker.Models;
 
 namespace Bugtracker.Main.Converters;
@@ -7,7 +8,7 @@ public class BugToTitleConverter : IValueConverter
 {
     public object? Convert(object? value, Type targetType, object? parameter, CultureInfo culture)
     {
-        var valueAsBug = (Bug)value ?? new Bug
+        var valueAsBug = (ObservableBug)value ?? new ObservableBug()
         {
             Id = -1,
             Title = string.Empty,

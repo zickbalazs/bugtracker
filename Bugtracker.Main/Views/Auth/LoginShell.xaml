@@ -6,11 +6,12 @@
        x:Class="Bugtracker.Main.Views.Auth.LoginShell"
        Title="Welcome to Bugtracker"
        NavBarIsVisible="False">
-    
-    <ShellContent Title="Login"
-                  ContentTemplate="{DataTemplate auth:LoginPage}"
-                  Icon="login.png"/>
-    <ShellContent Title="Registration"
-                  ContentTemplate="{DataTemplate auth:RegistrationPage}"
-                  Icon="register.png"/>
+    <FlyoutItem Title="Login"
+                FlyoutIcon="login.png">
+        <ShellContent ContentTemplate="{DataTemplate auth:LoginPage}"/>    
+    </FlyoutItem>
+    <FlyoutItem Title="Registration"
+                FlyoutIcon="register.png">
+        <ShellContent ContentTemplate="{DataTemplate auth:RegistrationPage}"/>    
+    </FlyoutItem>
 </Shell>
