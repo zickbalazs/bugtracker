@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Bugtracker.Main.Views.User.UserDataPage"
+             x:DataType="viewModels:UserDataViewModel"
+             Title="Your Account">
+    <ContentPage.Content>
+        <VerticalStackLayout Padding="10">
+            <ActivityIndicator
+                Margin="0,100"
+                HorizontalOptions="Center"
+                IsVisible="{Binding IsLoading}"
+                IsRunning="{Binding IsLoading}"/>
+            <VerticalStackLayout Spacing="10">
+                <Grid ColumnDefinitions="Auto,*" ColumnSpacing="10">
+                    <Image Width="24"
+                           Height="24"
+                           Source="account.png">
+                        <Image.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding
+                              Dark={StaticResource White},
+                              Light={StaticResource Black}}"/>
+                        </Image.Behaviors>
+                    </Image>
+                    <VerticalStackLayout Grid.Column="1">
+                        <Label Text="{Binding User.Name}"/>
+                        <Label Text="{Binding User.Email}"
+                               TextColor="{AppThemeBinding 
+                                Dark={StaticResource PrimaryDark},
+                                Light={StaticResource Primary}}"/>
+                    </VerticalStackLayout>    
+                </Grid>
+                <HorizontalStackLayout Spacing="10">
+                    <Button Text="Log out"
+                            Command="{Binding LogoutCommand}"/>
+                    <Button Text="Delete Account"
+                            Command="{Binding DeleteCommand}"/>
+                </HorizontalStackLayout>
+            </VerticalStackLayout>
+        </VerticalStackLayout>
+    </ContentPage.Content>
+</ContentPage>

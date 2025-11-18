@@ -3,6 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.Models", "Bugtracker.Models\Bugtracker.Models.csproj", "{67D634D0-2404-490D-83EB-5875FDDC581C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.Migrations", "Bugtracker.Migrations\Bugtracker.Migrations.csproj", "{6A0C7AFF-BD91-4D7E-86AF-FAFD35AFDFDE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.Data", "Bugtracker.Data\Bugtracker.Data.csproj", "{6BE282F1-FCFA-4B52-B2DF-61C2B0A13DDC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.Services", "Bugtracker.Services\Bugtracker.Services.csproj", "{5A003D4E-F525-4FA3-8858-C9F7B294E2DB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.Main", "Bugtracker.Main\Bugtracker.Main.csproj", "{73F1E94A-E9A4-4069-B21D-6B7A45CC6987}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Bugtracker.MediaUpload", "Bugtracker.MediaUpload\Bugtracker.MediaUpload.csproj", "{48C81A00-E912-43CC-B73C-972523A00618}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -10,5 +22,29 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{67D634D0-2404-490D-83EB-5875FDDC581C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67D634D0-2404-490D-83EB-5875FDDC581C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67D634D0-2404-490D-83EB-5875FDDC581C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67D634D0-2404-490D-83EB-5875FDDC581C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A0C7AFF-BD91-4D7E-86AF-FAFD35AFDFDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A0C7AFF-BD91-4D7E-86AF-FAFD35AFDFDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A0C7AFF-BD91-4D7E-86AF-FAFD35AFDFDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A0C7AFF-BD91-4D7E-86AF-FAFD35AFDFDE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6BE282F1-FCFA-4B52-B2DF-61C2B0A13DDC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6BE282F1-FCFA-4B52-B2DF-61C2B0A13DDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6BE282F1-FCFA-4B52-B2DF-61C2B0A13DDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6BE282F1-FCFA-4B52-B2DF-61C2B0A13DDC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5A003D4E-F525-4FA3-8858-C9F7B294E2DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A003D4E-F525-4FA3-8858-C9F7B294E2DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73F1E94A-E9A4-4069-B21D-6B7A45CC6987}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73F1E94A-E9A4-4069-B21D-6B7A45CC6987}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73F1E94A-E9A4-4069-B21D-6B7A45CC6987}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73F1E94A-E9A4-4069-B21D-6B7A45CC6987}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48C81A00-E912-43CC-B73C-972523A00618}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48C81A00-E912-43CC-B73C-972523A00618}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48C81A00-E912-43CC-B73C-972523A00618}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48C81A00-E912-43CC-B73C-972523A00618}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

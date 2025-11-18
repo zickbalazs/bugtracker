@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<DataTemplate xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converters="clr-namespace:Bugtracker.Main.Converters"
+             xmlns:models="clr-namespace:Bugtracker.Main.Models"
+             xmlns:consts="clr-namespace:Bugtracker.Main.Statics"
+             xmlns:components="clr-namespace:Bugtracker.Main.Views.Bugs.Components"
+             x:Class="Bugtracker.Main.Views.Bugs.Components.BugSummary"
+             x:DataType="models:ObservableBug">
+    <ContentView Padding="10">
+        <VerticalStackLayout>
+            <Label Text="{Binding ., Converter={converters:BugToTitleConverter}}" 
+                   FontSize="{x:Static consts:UIElements.H2TextSize}"
+                   TextColor="{AppThemeBinding
+                 Dark={StaticResource PrimaryDark},
+                 Light={StaticResource Primary}}"/>
+            <components:PriorityTag/>
+            <Label Text="{Binding Created}"/>
+            <Label Text="{Binding Author.Name}"/>
+            <Label Text="{Binding ShortDescription}"/>    
+        </VerticalStackLayout>
+    </ContentView>
+</DataTemplate>

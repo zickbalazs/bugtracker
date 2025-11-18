@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
+             xmlns:markdown="clr-namespace:Indiko.Maui.Controls.Markdown;assembly=Indiko.Maui.Controls.Markdown"
+             xmlns:components="clr-namespace:Bugtracker.Main.Views.Bugs.Components"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             xmlns:consts="clr-namespace:Bugtracker.Main.Statics"
+             xmlns:converters="clr-namespace:Bugtracker.Main.Converters"
+             x:Class="Bugtracker.Main.Views.Bugs.BugDetailsPage"
+             x:DataType="viewModels:BugDetailsViewModel"
+             Title="{Binding PageTitle}">
+    <ContentPage.ToolbarItems>
+        <ToolbarItem
+            Text="Comment"
+            IconImageSource="comment.png"
+            Command="{Binding CommentCommand}"
+            Priority="0"/>
+        <ToolbarItem
+            Text="Mark as done"
+            IconImageSource="check.png"
+            Command="{Binding MarkAsDoneCommand}"
+            Priority="1"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <VerticalStackLayout Padding="10">
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                   IsVisible="{Binding IsLoading}" VerticalOptions="Center"/>
+                <VerticalStackLayout IsVisible="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}">
+                    <markdown:MarkdownView
+                        TextColor="{AppThemeBinding 
+                            Light={StaticResource Black},
+                            Dark={StaticResource  White}}"
+                        TableRowTextColor="{AppThemeBinding 
+                            Light={StaticResource Black},
+                            Dark={StaticResource  White}}"
+                        H1Color="{AppThemeBinding
+                            Light={StaticResource Primary},
+                            Dark={StaticResource PrimaryDark}}"
+                        H2Color="{AppThemeBinding
+                            Light={StaticResource Primary},
+                            Dark={StaticResource PrimaryDark}}"
+                        H3Color="{AppThemeBinding
+                            Light={StaticResource Primary},
+                            Dark={StaticResource PrimaryDark}}"
+                        HyperlinkColor="{AppThemeBinding 
+                            Light={StaticResource Primary},
+                            Dark={StaticResource PrimaryDark}}"
+                        TableHeaderTextColor="{AppThemeBinding 
+                            Light={StaticResource Primary},
+                            Dark={StaticResource PrimaryDark}}"
+                        BlockQuoteBackgroundColor="{AppThemeBinding
+                            Light={StaticResource Gray100},
+                            Dark={StaticResource Gray950}}"
+                        BlockQuoteTextColor="{AppThemeBinding 
+                            Light={StaticResource Black},
+                            Dark={StaticResource  White}}"
+                        H1FontSize="{x:Static consts:UIElements.H1TextSize}"
+                        H2FontSize="{x:Static consts:UIElements.H2TextSize}"
+                        H3FontSize="{x:Static consts:UIElements.H3TextSize}"
+                        TextFontSize="{x:Static consts:UIElements.TextSize}"
+                        TextFontFace="{x:Static consts:UIElements.TextFont}"
+                        MarkdownText="{Binding Bug.Description}"/>
+                    <Label IsVisible="{Binding FileExists}" 
+                           Text="Attached File"
+                           Margin="0,10"
+                           FontSize="{x:Static consts:UIElements.H2TextSize}"/>
+                    <Grid ColumnDefinitions="Auto, *"
+                          VerticalOptions="Center"
+                          IsVisible="{Binding FileExists}">
+                        <ImageButton
+                            MaximumHeightRequest="24"
+                            Grid.Column="0" 
+                            Source="attachment.png"
+                            Command="{Binding OpenFileInBrowserCommand}">
+                            <ImageButton.Behaviors>
+                                <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding
+                                  Dark={StaticResource PrimaryDark},
+                                  Light={StaticResource Primary}}"/>
+                            </ImageButton.Behaviors>
+                        </ImageButton>
+                        <Label Grid.Column="1" 
+                            Text="{Binding Bug.AssociatedFileName}"
+                            TextColor="{AppThemeBinding 
+                              Dark={StaticResource PrimaryDark},
+                              Light={StaticResource Primary}}"
+                            VerticalOptions="Center"/>
+                    </Grid>
+                    <Label Text="Comments" 
+                           IsVisible="{Binding HasComments}"
+                           FontSize="{x:Static consts:UIElements.H2TextSize}"
+                           Margin="0, 10"/>
+                    <CollectionView ItemsSource="{Binding Comments}" 
+                                    ItemTemplate="{components:Comment}"
+                                    IsVisible="{Binding HasComments}"/>
+                    <Label Margin="0,10"
+                           Text="{Binding Bug.SolvedOn, Converter={converters:SolvedDateToStringConverter}}" IsVisible="{Binding Bug.Solved}"/>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

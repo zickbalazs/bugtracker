@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Bugtracker.Main.Views.Priorities.AddPriorityPage"
+             x:DataType="viewModels:PriorityAddViewModel"
+             Title="Add New Priority">
+    <ContentPage.Content>
+        <VerticalStackLayout Spacing="5"
+                             Padding="15">
+            <VerticalStackLayout>
+                <Label Text="Name:"/>
+                <Entry Placeholder="Critical"
+                       Text="{Binding Title}"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout>
+                <Label Text="ColorCode (optional):"/>
+                <Entry Placeholder="#abcdef"
+                       Text="{Binding ColorCode}"/>
+            </VerticalStackLayout>
+            <Grid ColumnDefinitions="Auto, *">
+                <Button Text="Add"
+                        ImageSource="add.png"
+                        Command="{Binding CreateCommand}">
+                    <Button.Behaviors>
+                        <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding 
+                          Light={StaticResource White},
+                          Dark={StaticResource PrimaryDarkText}}"/>
+                    </Button.Behaviors>
+                </Button>
+            </Grid>
+        </VerticalStackLayout>
+    </ContentPage.Content>
+</ContentPage>

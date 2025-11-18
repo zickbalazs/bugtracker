@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:auth="using:Bugtracker.Main.Views.Auth"
+       xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
+       x:Class="Bugtracker.Main.Views.Auth.LoginShell"
+       Title="Welcome to Bugtracker">
+    <Shell.BindingContext>
+        <viewModels:ConnectionViewModel/>
+    </Shell.BindingContext>
+    <FlyoutItem Title="Login"
+                FlyoutIcon="login.png">
+        <ShellContent ContentTemplate="{DataTemplate auth:LoginPage}"/>    
+    </FlyoutItem>
+    <FlyoutItem Title="Registration"
+                FlyoutIcon="register.png">
+        <ShellContent ContentTemplate="{DataTemplate auth:RegistrationPage}"/>    
+    </FlyoutItem>
+</Shell>

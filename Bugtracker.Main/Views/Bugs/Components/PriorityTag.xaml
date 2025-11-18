@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Bugtracker.Main.Models"
+             xmlns:consts="clr-namespace:Bugtracker.Main.Statics"
+             x:Class="Bugtracker.Main.Views.Bugs.Components.PriorityTag"
+             x:DataType="models:ObservableBug">
+    <HorizontalStackLayout Spacing="5">
+        <Border WidthRequest="{x:Static consts:PriorityStyles.Size}"
+                HeightRequest="{x:Static consts:PriorityStyles.Size}"
+                StrokeShape="Ellipse"
+                BackgroundColor="{Binding Priority.ColorCode}"/>
+        <Label FontSize="{x:Static consts:UIElements.H3TextSize}"
+               Text="{Binding Priority.Title}"
+               TextColor="{StaticResource SecondaryDarkText}"/>
+    </HorizontalStackLayout>
+</ContentView>

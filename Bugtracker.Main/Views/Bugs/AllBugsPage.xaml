@@ -1,0 +1,59 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
+             xmlns:converters="clr-namespace:Bugtracker.Main.Converters"
+             xmlns:components="clr-namespace:Bugtracker.Main.Views.Bugs.Components"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Bugtracker.Main.Views.Bugs.AllBugsPage"
+             x:DataType="viewModels:BugsViewModel">
+    <ContentPage.Resources>
+        <converters:StringToColorConverter x:Key="ColorConverter"/>
+    </ContentPage.Resources>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Report Bug"
+                         IconImageSource="add.png"
+                         Command="{Binding CreateBugCommand}"/>
+        <ToolbarItem Text="View Bug"
+                     IconImageSource="comment.png"
+                     Command="{Binding ViewBugCommand}"/>
+        <ToolbarItem Text="Edit Bug"
+                     IconImageSource="edit.png"
+                     Command="{Binding EditBugCommand}"/>
+        <ToolbarItem Text="Delete Bug"
+                     IconImageSource="delete.png"
+                     Command="{Binding DeleteBugCommand}"/>
+    </ContentPage.ToolbarItems>
+    <ContentPage.Content>
+        <ScrollView>
+            <VerticalStackLayout>
+                <ActivityIndicator IsVisible="{Binding LoadingFromDb}" 
+                                   IsRunning="{Binding LoadingFromDb}"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   Margin="0,100"/>
+                <VerticalStackLayout IsVisible="{Binding LoadingFromDb, Converter={toolkit:InvertedBoolConverter}}">
+                    <Label Text="There are no priorities, you should add one."
+                           IsVisible="{Binding NoPriorities}"
+                           Style="{StaticResource Headline}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Margin="0, 100"/>
+                    <Label Text="No bugs yet :)"
+                           IsVisible="{Binding NoBugsAtAll}"
+                           Style="{StaticResource Headline}"
+                           HorizontalOptions="Center"
+                           VerticalOptions="Center"
+                           Margin="0,100"/>
+                    <VerticalStackLayout IsVisible="{Binding  NoBugsAtAll, Converter={toolkit:InvertedBoolConverter}}">
+                        <CollectionView ItemsSource="{Binding Bugs}" 
+                                        ItemTemplate="{components:BugSummary}"
+                                        SelectionMode="Single"
+                                        SelectedItem="{Binding SelectedBug}"/>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </VerticalStackLayout>
+        </ScrollView>
+    </ContentPage.Content>
+</ContentPage>

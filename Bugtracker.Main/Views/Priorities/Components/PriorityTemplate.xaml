@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<DataTemplate xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:Bugtracker.Main.Models"
+             xmlns:consts="clr-namespace:Bugtracker.Main.Statics"
+             x:Class="Bugtracker.Main.Views.Priorities.Components.PriorityTemplate"
+             x:DataType="models:ObservablePriority">
+    <ContentView Padding="10">
+        <Grid ColumnDefinitions="Auto, Auto, *" 
+              ColumnSpacing="5"
+              VerticalOptions="Center">
+            <Border Grid.Column="0" 
+                    BackgroundColor="{Binding ColorCode}"
+                    HeightRequest="{x:Static consts:PriorityStyles.Size}"
+                    WidthRequest="{x:Static consts:PriorityStyles.Size}" 
+                    StrokeShape="Ellipse"/>
+            <Label  Grid.Column="1"
+                    Text="{Binding Title}"
+                    FontSize="{x:Static consts:UIElements.H2TextSize}"
+                    />
+            <Label Grid.Column="2"
+                   Text="{Binding Bugs.Count, StringFormat='({0})'}"
+                   VerticalOptions="Center" />
+        </Grid>
+    </ContentView>
+</DataTemplate>

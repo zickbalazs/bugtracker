@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Bugtracker.Main.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:components="clr-namespace:Bugtracker.Main.Views.Components"
+    xmlns:bugs="using:Bugtracker.Main.Views.Bugs"
+    xmlns:priorities="using:Bugtracker.Main.Views.Priorities"
+    xmlns:account="using:Bugtracker.Main.Views.User"
+    xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
+    Title="Bugtracker">
+    <Shell.BindingContext>
+        <viewModels:ConnectionViewModel/>
+    </Shell.BindingContext>
+    <Shell.FlyoutHeader>
+        <components:FlyoutHeader/>
+    </Shell.FlyoutHeader>
+    <Shell.FlyoutFooter>
+        <components:FlyoutFooter/>
+    </Shell.FlyoutFooter>
+    
+    <FlyoutItem Title="Bugs"
+                FlyoutIcon="bug.png">
+        <ShellContent Title="Bugs"
+                      ContentTemplate="{DataTemplate bugs:AllBugsPage}"/>
+    </FlyoutItem>
+    <FlyoutItem Title="Priorities"
+                FlyoutIcon="priority.png">
+        <ShellContent ContentTemplate="{DataTemplate priorities:PrioritiesMainPage}"
+                      Title="Priorities"/>
+    </FlyoutItem>    
+    <FlyoutItem Title="My Account"
+                FlyoutIcon="account.png">
+        <ShellContent ContentTemplate="{DataTemplate account:UserDataPage}"
+                      Title="My Account"/>
+    </FlyoutItem>    
+</Shell>

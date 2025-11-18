@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
+             x:Class="Bugtracker.Main.Views.Bugs.EditBugPage"
+             x:DataType="viewModels:EditBugViewModel">
+    <ContentPage.Content>
+        <VerticalStackLayout Padding="15"
+                             Spacing="15">
+            <VerticalStackLayout>
+                <Label Text="Id:"/>
+                <Entry Text="{Binding Id}" 
+                       IsEnabled="False"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout>
+                <Label Text="Title:"/>
+                <Entry Text="{Binding Title}"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout>
+                <Label Text="Summary:"/>
+                <Entry Text="{Binding ShortDesc}"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout>
+                <Label Text="Describe the bug:"/>
+                <Editor Text="{Binding Description}"
+                        MinimumHeightRequest="250"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout>
+                <Label Text="Priority:"/>
+                <Picker ItemsSource="{Binding Priorities}"
+                        SelectedItem="{Binding SelectedPriority}"/>
+            </VerticalStackLayout>
+            <Button Text="Submit"
+                    Command="{Binding SubmitCommand}"/>
+        </VerticalStackLayout>
+    </ContentPage.Content>
+</ContentPage>

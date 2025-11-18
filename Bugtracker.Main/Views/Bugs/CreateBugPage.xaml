@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:viewModels="clr-namespace:Bugtracker.Main.ViewModels"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+             x:Class="Bugtracker.Main.Views.Bugs.CreateBugPage"
+             Title="Report a new bug"
+             x:DataType="viewModels:CreateBugViewModel">
+    <ContentPage.Content>
+        <VerticalStackLayout Padding="15" 
+                             Spacing="15">
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Title:"/>
+                <Entry Text="{Binding Title}"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Short details:"/>
+                <Entry Text="{Binding ShortDesc}"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Describe the bug:"/>
+                <Editor MinimumHeightRequest="100" Text="{Binding Details}"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Upload a file related to the bug (optional):"/>
+                <Grid ColumnDefinitions="Auto, *, Auto" VerticalOptions="Center" ColumnSpacing="10">
+                    <Button Text="Attach"
+                            Grid.Column="0"
+                            ImageSource="add_file.png"
+                            Command="{Binding UploadFileCommand}">
+                        <Button.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding 
+                            Dark={StaticResource PrimaryDarkText},
+                            Light={StaticResource White}}"/>
+                        </Button.Behaviors>
+                    </Button>
+                    <Label Grid.Column="1"
+                           Text="{Binding UploadedFile.FileName}"
+                           VerticalOptions="Center"/>
+                    <ImageButton Source="close.png"
+                                 Grid.Column="2"
+                                 IsOpaque="True"
+                                 IsVisible="{Binding CanClearFile}"
+                                 MaximumHeightRequest="24"
+                                 Command="{Binding EmptyFileCommand}">
+                        <ImageButton.Behaviors>
+                            <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding 
+                                Dark={StaticResource PrimaryDark},
+                                Light={StaticResource Primary}}"/>
+                        </ImageButton.Behaviors>
+                    </ImageButton>
+                </Grid>
+            </VerticalStackLayout>
+            <VerticalStackLayout Spacing="5">
+                <ActivityIndicator IsRunning="{Binding IsLoading}"
+                                   IsVisible="{Binding IsLoading}"/>
+                <Label Text="Priority"
+                       IsVisible="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}"/>
+                <Picker ItemsSource="{Binding Priorities}"
+                        SelectedItem="{Binding AssignedPriority}"
+                        IsVisible="{Binding IsLoading, Converter={toolkit:InvertedBoolConverter}}"/>
+            </VerticalStackLayout>
+            <Grid ColumnDefinitions="Auto, *">
+                <Button Text="Report"
+                        ImageSource="add.png"
+                        Grid.Column="0"
+                        Command="{Binding UploadEntryCommand}">
+                    <Button.Behaviors>
+                        <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding 
+                      Dark={StaticResource PrimaryDarkText},
+                      Light={StaticResource White}}"/>
+                    </Button.Behaviors>
+                </Button>    
+            </Grid>
+        </VerticalStackLayout>
+    </ContentPage.Content>
+</ContentPage>
