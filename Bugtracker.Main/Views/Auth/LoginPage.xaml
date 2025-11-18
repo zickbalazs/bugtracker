@@ -13,7 +13,8 @@
                 <VerticalStackLayout Spacing="5" 
                                      Padding="15">
                     <Label Text="Email address:"/>
-                    <Entry Text="{Binding EmailAddress}"/>
+                    <Entry Text="{Binding EmailAddress}"
+                           Keyboard="Email"/>
                 </VerticalStackLayout>
                 <VerticalStackLayout Spacing="5" 
                                      Padding="15">

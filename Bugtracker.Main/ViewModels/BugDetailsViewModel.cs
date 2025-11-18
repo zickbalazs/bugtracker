@@ -15,39 +15,40 @@ public partial class BugDetailsViewModel : ObservableObject
     private readonly IBugCommentService _commentService;
     private readonly IUserService _userService;
 
-    [ObservableProperty, NotifyPropertyChangedFor(nameof(InternetAvailable))] 
+    
+    [ObservableProperty, 
+    NotifyCanExecuteChangedFor(nameof(OpenFileInBrowserCommand)),
+    NotifyCanExecuteChangedFor(nameof(CommentCommand)),
+    NotifyCanExecuteChangedFor(nameof(MarkAsDoneCommand))]
     private bool internetIsAvailable = Connectivity.Current.NetworkAccess == NetworkAccess.Internet;
-    
-    [ObservableProperty, 
+
+    [ObservableProperty,
      NotifyCanExecuteChangedFor(nameof(MarkAsDoneCommand)),
-     NotifyCanExecuteChangedFor(nameof(CommentCommand)),
-     NotifyCanExecuteChangedFor(nameof(EditCommentCommand)),
-     NotifyCanExecuteChangedFor(nameof(DeleteCommentCommand))]
-    private User currentUser= new User();
-    
-    [ObservableProperty, 
+     NotifyCanExecuteChangedFor(nameof(CommentCommand))]
+    private User currentUser = new();
+
+    [ObservableProperty,
      NotifyCanExecuteChangedFor(nameof(MarkAsDoneCommand)),
      NotifyCanExecuteChangedFor(nameof(CommentCommand)),
      NotifyPropertyChangedFor(nameof(FileExists))]
-    private ObservableBug bug =new ObservableBug()
+    private ObservableBug bug = new()
     {
         Title = string.Empty,
         Description = string.Empty,
         ShortDescription = string.Empty,
         AssociatedFileName = "",
-        Author = new User(){},
+        Author = new User() { },
         Comments = [],
         Created = DateTime.Now,
         Id = -1,
-        Priority = new Priority(){Id=-1, ColorCode = "#fff", Title = string.Empty},
+        Priority = new Priority() { Id = -1, ColorCode = "#fff", Title = string.Empty },
         Solved = false,
         SolvedOn = null,
     };
-    
-    [ObservableProperty, 
-     NotifyCanExecuteChangedFor(nameof(MarkAsDoneCommand)), 
-     NotifyCanExecuteChangedFor(nameof(CommentCommand)),
-     NotifyCanExecuteChangedFor(nameof(EditCommentCommand))]
+
+    [ObservableProperty,
+     NotifyCanExecuteChangedFor(nameof(MarkAsDoneCommand)),
+     NotifyCanExecuteChangedFor(nameof(CommentCommand))]
     private bool isLoading;
     [ObservableProperty, NotifyPropertyChangedFor(nameof(HasComments))]
     private List<BugComment> comments = [];
@@ -70,30 +71,21 @@ public partial class BugDetailsViewModel : ObservableObject
     
     public bool HasComments => Comments.Count > 0;
 
-    private bool InternetAvailable => InternetIsAvailable;
-    
     private bool AllowedToComment()
     {
-        return !IsLoading && !Bug.Solved;
+        return !IsLoading && !Bug.Solved && InternetIsAvailable;
     }
 
     public bool FileExists => Bug.AssociatedFileName != null;
     
     private bool AllowedToClose()
     {
-        return !IsLoading && !Bug.Solved && (Bug.Author.Id == CurrentUser.Id || CurrentUser.IsAdmin);
+        return !IsLoading && 
+               !Bug.Solved && 
+               (Bug.Author.Id == CurrentUser.Id || CurrentUser.IsAdmin) && 
+               InternetIsAvailable;
     }
 
-    private bool AllowedToEditComment(BugComment comment)
-    {
-        return !IsLoading && comment.Author.Id == CurrentUser.Id;
-    }
-
-    private bool AllowedToDeleteComment(BugComment comment)
-    {
-        return !IsLoading && (comment.Author.Id == CurrentUser.Id || CurrentUser.IsAdmin);
-    }
-    
     public BugDetailsViewModel(IBugService bugService, IBugCommentService commentService, IUserService userService)
     {
         _bugService = bugService;
@@ -168,20 +160,7 @@ public partial class BugDetailsViewModel : ObservableObject
             }
         }
     }
-
-    [RelayCommand(CanExecute = nameof(AllowedToEditComment))]
-    private async Task EditComment(BugComment comment)
-    {
-        
-    }
-
-    [RelayCommand(CanExecute = nameof(AllowedToDeleteComment))]
-    private async Task DeleteComment(BugComment comment)
-    {
-        
-    }
-
-    [RelayCommand(CanExecute = nameof(InternetAvailable))]
+    [RelayCommand(CanExecute = nameof(InternetIsAvailable))]
     private async Task OpenFileInBrowser()
     {
         await Browser.Default.OpenAsync($"{AuthData.BackendUrl}/storage/{Bug.AssociatedFileName}");

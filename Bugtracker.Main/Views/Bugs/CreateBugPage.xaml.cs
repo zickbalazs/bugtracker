@@ -21,4 +21,10 @@ public partial class CreateBugPage : ContentPage
                          message: message,
                          cancel: UIElements.ConfirmDialogText));
     }
+
+    protected override void OnAppearing()
+    {
+        base.OnAppearing();
+        ((CreateBugViewModel)BindingContext).InitViewModel();
+    }
 }

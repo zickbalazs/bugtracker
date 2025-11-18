@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using Bugtracker.Main.Views.Auth;
 
 namespace Bugtracker.Main.Statics;
 
@@ -16,5 +17,16 @@ public static class AuthData
     public static void SetEmail(string email)
     {
         Preferences.Set(SecureStorageUserEmailKey, email);
+    }
+
+    public static void GoToLogin()
+    {
+        ClearEmail();
+        Application.Current!.Windows[0].Page = new LoginShell();
+    }
+    
+    public static void ClearEmail()
+    {
+        Preferences.Clear();
     }
 }

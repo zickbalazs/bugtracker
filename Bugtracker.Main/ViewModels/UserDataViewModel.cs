@@ -23,7 +23,6 @@ public partial class UserDataViewModel : ObservableObject
         _service = service;
         Connectivity.ConnectivityChanged +=
             (_, args) => InternetAvailable = args.NetworkAccess == NetworkAccess.Internet; 
-        GetCurrentUser();
     }
 
     [RelayCommand]
@@ -66,9 +65,16 @@ public partial class UserDataViewModel : ObservableObject
         }
         else
         {
-            var usr = await _service.GetUserByEmail(email);
-            this.User = usr;
-            this.IsLoading = false;    
+            try
+            {
+                var usr = await _service.GetUserByEmail(email);
+                this.User = usr;
+                this.IsLoading = false;
+            }
+            catch
+            {
+                AuthData.GoToLogin();
+            }
         }
     }
 }

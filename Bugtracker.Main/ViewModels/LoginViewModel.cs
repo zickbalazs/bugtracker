@@ -7,25 +7,37 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Bugtracker.Main.ViewModels;
 
-public partial class LoginViewModel(IUserService service) : ObservableObject
+public partial class LoginViewModel : ObservableObject
 {
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(LoginCommand))]
+    private bool internetIsAvailable = Connectivity.NetworkAccess == NetworkAccess.Internet;
+    
+    
     [ObservableProperty] private string emailAddress = string.Empty;
     [ObservableProperty] private string password = string.Empty;
     [ObservableProperty] private bool isLoading = false;
-    
+    private readonly IUserService _service;
+
+    public LoginViewModel(IUserService service)
+    {
+        _service = service;
+        Connectivity.ConnectivityChanged +=
+            (_, args) => InternetIsAvailable = args.NetworkAccess == NetworkAccess.Internet;
+    }
+
     private LoginForm Form => new()
     {
         Email = EmailAddress,
         Password = Password
     };
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(InternetIsAvailable))]
     private async Task Login()
     {
         IsLoading = true;
         try
         {
-            var successfulAttempt = await service.LoginAsync(Form);
+            var successfulAttempt = await _service.LoginAsync(Form);
             
             if (successfulAttempt)
             {

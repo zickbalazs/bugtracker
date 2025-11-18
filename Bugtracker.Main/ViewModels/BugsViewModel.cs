@@ -1,6 +1,7 @@
 ﻿using System.Collections.ObjectModel;
 using Bugtracker.Main.Models;
 using Bugtracker.Main.Statics;
+using Bugtracker.Main.Views.Auth;
 using Bugtracker.Main.Views.Bugs;
 using Bugtracker.Models;
 using Bugtracker.Services;
@@ -78,16 +79,22 @@ public partial class BugsViewModel : ObservableObject
         _priorityService = priorityService;
         Connectivity.ConnectivityChanged +=
             (_, args) => InternetAvailable = args.NetworkAccess == NetworkAccess.Internet;
-        GetBugs();
     }
 
     public async Task GetBugs()
     {
-        LoadingFromDb = true;
-        Bugs = [..(await _service.GetAllAsync()).Select(ObservableBug.Parse).ToList()];
-        CurrentUser = await _userService.GetUserByEmail(AuthData.GetEmail());
-        PrioritiesCount = (await _priorityService.GetAllAsync()).Count;
-        LoadingFromDb = false;
+        try
+        {
+            LoadingFromDb = true;
+            Bugs = [..(await _service.GetAllAsync()).Select(ObservableBug.Parse).ToList()];
+            CurrentUser = await _userService.GetUserByEmail(AuthData.GetEmail());
+            PrioritiesCount = (await _priorityService.GetAllAsync()).Count;
+            LoadingFromDb = false;
+        }
+        catch (Exception ex)
+        {
+            AuthData.GoToLogin();
+        }
     }
 
     [RelayCommand(CanExecute = nameof(SelectedBugNotNull))]

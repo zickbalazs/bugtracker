@@ -65,7 +65,6 @@
                 <Button Text="Report"
                         ImageSource="add.png"
                         Grid.Column="0"
-                        IsEnabled="{Binding IsFormCorrect}"
                         Command="{Binding UploadEntryCommand}">
                     <Button.Behaviors>
                         <toolkit:IconTintColorBehavior TintColor="{AppThemeBinding 

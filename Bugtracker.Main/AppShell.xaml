@@ -21,8 +21,8 @@
     
     <FlyoutItem Title="Bugs"
                 FlyoutIcon="bug.png">
-            <ShellContent Title="Bugs"
-                          ContentTemplate="{DataTemplate bugs:AllBugsPage}"/>
+        <ShellContent Title="Bugs"
+                      ContentTemplate="{DataTemplate bugs:AllBugsPage}"/>
     </FlyoutItem>
     <FlyoutItem Title="Priorities"
                 FlyoutIcon="priority.png">

@@ -15,23 +15,27 @@ public partial class CreateBugViewModel : ObservableValidator
     private readonly IBugService _bugService;
     private readonly IPriorityService _priorityService;
     private readonly IUserService _userService;
+
+    [ObservableProperty, 
+     NotifyCanExecuteChangedFor(nameof(UploadEntryCommand))] 
+    private bool internetIsAvailable = Connectivity.NetworkAccess == NetworkAccess.Internet;
     
     [Required]
     [MinLength(3)]
-    [ObservableProperty, NotifyPropertyChangedFor(nameof(IsFormCorrect))]
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(UploadEntryCommand))]
     private string title = string.Empty;
     
     [Required]
     [MinLength(10)]
-    [ObservableProperty, NotifyPropertyChangedFor(nameof(IsFormCorrect))]
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(UploadEntryCommand))]
     private string shortDesc = string.Empty;
     
     [Required]
-    [ObservableProperty, NotifyPropertyChangedFor(nameof(IsFormCorrect))]
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(UploadEntryCommand))]
     private string details = string.Empty;
     
     [Required]
-    [ObservableProperty, NotifyPropertyChangedFor(nameof(IsFormCorrect))]
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(UploadEntryCommand))]
     private Priority? assignedPriority = null;
 
     [ObservableProperty] 
@@ -50,10 +54,11 @@ public partial class CreateBugViewModel : ObservableValidator
         _bugService = bugService;
         _priorityService = priorityService;
         _userService = userService;
-        InitViewModel();
+        Connectivity.ConnectivityChanged +=
+            (_, args) => InternetIsAvailable = args.NetworkAccess == NetworkAccess.Internet;
     }
 
-    private async Task InitViewModel()
+    public async Task InitViewModel()
     {
         IsLoading = true;
 
@@ -67,7 +72,7 @@ public partial class CreateBugViewModel : ObservableValidator
         get
         {
             this.ValidateAllProperties();
-            return !HasErrors;
+            return !HasErrors && InternetIsAvailable;
         }
     }
 
@@ -106,7 +111,7 @@ public partial class CreateBugViewModel : ObservableValidator
         this.AssignedPriority = null;
     }
     
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(IsFormCorrect))]
     private async Task UploadEntry()
     {
         try

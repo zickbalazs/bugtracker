@@ -9,35 +9,47 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Bugtracker.Main.ViewModels;
 
-public partial class RegistrationViewModel(IUserService service) : ObservableValidator
+public partial class RegistrationViewModel : ObservableValidator
 {
     [ObservableProperty] 
     private bool isLoading = false;
+
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(RegisterUserCommand))]
+    private bool internetIsAvailable = Connectivity.NetworkAccess == NetworkAccess.Internet;
     
     [ObservableProperty]
     [Required]
     [MinLength(8)]
-    [NotifyPropertyChangedFor(nameof(FormValid))]
+    [NotifyCanExecuteChangedFor(nameof(RegisterUserCommand))]
     private string password = string.Empty;
     
     [ObservableProperty]
     [Required]
     [EmailAddress]
-    [NotifyPropertyChangedFor(nameof(FormValid))]
+    [NotifyCanExecuteChangedFor(nameof(RegisterUserCommand))]
     private string email = string.Empty;
     
     [ObservableProperty]
     [Required]
     [MinLength(3)]
-    [NotifyPropertyChangedFor(nameof(FormValid))]
+    [NotifyCanExecuteChangedFor(nameof(RegisterUserCommand))]
     private string username = string.Empty;
+
+    private readonly IUserService _service;
+
+    public RegistrationViewModel(IUserService service)
+    {
+        _service = service;
+        Connectivity.ConnectivityChanged +=
+            (_, args) => InternetIsAvailable = args.NetworkAccess == NetworkAccess.Internet;
+    }
 
     public bool FormValid
     {
         get
         {
             this.ValidateAllProperties();
-            return !this.HasErrors;
+            return !this.HasErrors && InternetIsAvailable;
         }
     }
 
@@ -48,7 +60,7 @@ public partial class RegistrationViewModel(IUserService service) : ObservableVal
         Password = this.Password
     };
 
-    [RelayCommand]
+    [RelayCommand(CanExecute = nameof(FormValid))]
     private async Task RegisterUser()
     {
         IsLoading = true;
@@ -61,7 +73,7 @@ public partial class RegistrationViewModel(IUserService service) : ObservableVal
             }
             else
             {
-                await service.RegisterAsync(this.Form);
+                await _service.RegisterAsync(this.Form);
                 AuthData.SetEmail(Form.Email);
                 Application.Current!.Windows[0].Page = new AppShell();
             }

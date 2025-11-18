@@ -18,7 +18,8 @@
             <VerticalStackLayout Spacing="5" 
                                  Padding="15">
                 <Label Text="Username:"/>
-                <Entry Text="{Binding Username}"/>
+                <Entry Text="{Binding Username}"
+                       Keyboard="Email"/>
             </VerticalStackLayout>
             <VerticalStackLayout Spacing="5" 
                                  Padding="15">
@@ -28,7 +29,6 @@
             </VerticalStackLayout>
             <HorizontalStackLayout HorizontalOptions="Center">
                 <Button Text="Register"
-                        IsEnabled="{Binding FormValid}"
                         Command="{Binding RegisterUserCommand}"/>
             </HorizontalStackLayout>
             <ActivityIndicator IsRunning="{Binding IsLoading}"/>

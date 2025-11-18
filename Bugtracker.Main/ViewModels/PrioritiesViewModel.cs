@@ -43,18 +43,22 @@ public partial class PrioritiesViewModel : ObservableObject
         _priorityService = priorityService;
         _userService = userService;
         Connectivity.Current.ConnectivityChanged += ConnectivityAvailable; 
-        GetPriorities();
     }
 
     public async Task GetPriorities()
     {
-        IsLoading = true;
-
-        var dbData = (await _priorityService.GetAllAsync()).Select(ObservablePriority.Parse);
-        
-        Priorities = [..dbData];
-        CurrentUser = await _userService.GetUserByEmail(AuthData.GetEmail());
-        IsLoading = false;
+        try
+        {
+            IsLoading = true;
+            var dbData = (await _priorityService.GetAllAsync()).Select(ObservablePriority.Parse);
+            Priorities = [..dbData];
+            CurrentUser = await _userService.GetUserByEmail(AuthData.GetEmail());
+            IsLoading = false;
+        }
+        catch
+        {
+            AuthData.GoToLogin();
+        }
     }
 
     [ObservableProperty]

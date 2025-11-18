@@ -8,11 +8,16 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Bugtracker.Main.ViewModels;
 
-public partial class EditPriorityViewModel(IPriorityService service) : ObservableValidator
+public partial class EditPriorityViewModel : ObservableValidator
 {
     [ObservableProperty,
     NotifyCanExecuteChangedFor(nameof(SubmitCommand))]
     private bool isLoading = false;
+
+
+    [ObservableProperty, 
+     NotifyCanExecuteChangedFor(nameof(SubmitCommand))] 
+    private bool internetIsAvailable = Connectivity.NetworkAccess == NetworkAccess.Internet;
     
     [ObservableProperty]
     private int id = -1;
@@ -30,13 +35,21 @@ public partial class EditPriorityViewModel(IPriorityService service) : Observabl
      Required,
      RegularExpression(@"^#?([0-9a-f]{6}|[0-9a-f]{3})$")]
     private string colorCode = string.Empty;
-    
-    
+
+    private readonly IPriorityService _service;
+
+    public EditPriorityViewModel(IPriorityService service)
+    {
+        _service = service;
+        Connectivity.ConnectivityChanged +=
+            (_, args) => InternetIsAvailable = args.NetworkAccess == NetworkAccess.Internet;
+    }
+
 
     private bool CanSubmit()
     {
         ValidateAllProperties();
-        return !IsLoading && !HasErrors;
+        return !IsLoading && !HasErrors && InternetIsAvailable;
     }
 
     private PriorityDto dto => new()
@@ -48,7 +61,7 @@ public partial class EditPriorityViewModel(IPriorityService service) : Observabl
     public async Task GetPriority(int id)
     {
         IsLoading = true;
-        var priority = await service.GetAsync(id);
+        var priority = await _service.GetAsync(id);
         Id = priority.Id;
         Title = priority.Title;
         ColorCode = priority.ColorCode;
@@ -61,7 +74,7 @@ public partial class EditPriorityViewModel(IPriorityService service) : Observabl
     {
         try
         {
-            await service.ModifyAsync(Id, dto);
+            await _service.ModifyAsync(Id, dto);
             await Shell.Current.GoToAsync("../");
         }
         catch (Exception ex)

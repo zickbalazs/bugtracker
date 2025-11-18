@@ -8,10 +8,23 @@ using CommunityToolkit.Mvvm.Messaging;
 
 namespace Bugtracker.Main.ViewModels;
 
-public partial class EditBugViewModel(
-    IBugService bugService,
-    IPriorityService priorityService) : ObservableValidator
+public partial class EditBugViewModel : ObservableValidator
 {
+    private readonly IBugService bugService;
+    private readonly IPriorityService priorityService;
+    
+    public EditBugViewModel(IBugService bugService, IPriorityService priorityService)
+    {
+        this.bugService = bugService;
+        this.priorityService = priorityService;
+        Connectivity.ConnectivityChanged += (_, args) =>
+            InternetIsAvailable = args.NetworkAccess == NetworkAccess.Internet;
+    }
+    
+    
+    [ObservableProperty, NotifyCanExecuteChangedFor(nameof(SubmitCommand))] 
+    private bool internetIsAvailable = Connectivity.NetworkAccess == NetworkAccess.Internet;
+    
     [ObservableProperty] 
     private int id;
 
@@ -47,7 +60,7 @@ public partial class EditBugViewModel(
     private bool IsFormCorrect()
     {
         this.ValidateAllProperties();
-        return !HasErrors;
+        return !HasErrors && InternetIsAvailable;
     }
 
     public async Task Initialize(int id)
