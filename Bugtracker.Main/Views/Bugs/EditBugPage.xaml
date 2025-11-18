@@ -11,7 +11,8 @@
             <VerticalStackLayout>
                 <Label Text="Id:"/>
                 <Entry Text="{Binding Id}" 
-                       IsEnabled="False"/>
+                       IsEnabled="False"
+                       IsReadOnly="True"/>
             </VerticalStackLayout>
             <VerticalStackLayout>
                 <Label Text="Title:"/>

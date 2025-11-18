@@ -105,6 +105,7 @@ public partial class CreateBugViewModel : ObservableValidator
 
     private void EmptyForm()
     {
+        EmptyFile();
         this.Title = string.Empty;
         this.ShortDesc = string.Empty;
         this.Details = string.Empty;

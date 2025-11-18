@@ -11,6 +11,12 @@
         <VerticalStackLayout Spacing="5" 
                              Padding="10">
             <VerticalStackLayout>
+                <Label Text="Id:"/>
+                <Entry Text="{Binding Id}"
+                       IsReadOnly="True"
+                       IsEnabled="False"/>
+            </VerticalStackLayout>
+            <VerticalStackLayout>
                 <Label Text="Title:"/>
                 <Entry Text="{Binding Title}"/>
             </VerticalStackLayout>

@@ -7,11 +7,8 @@ namespace Bugtracker.Main;
 
 public partial class App : Application
 {
-    private readonly IUserService _service;
-    
     public App(IUserService service)
     {
-        _service = service;
         InitializeComponent();
     }
 
